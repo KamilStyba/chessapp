@@ -1,0 +1,97 @@
+import { Lesson } from '../types';
+
+export const sicScheveningen: Lesson = {
+  id: 'scheveningen',
+  parent: 'sicilian',
+  title: 'Scheveningen Variation',
+  intro:
+    "The Scheveningen (1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 e6) is the 'small centre' Sicilian. Black's pawns on d6 and e6 form a restrained, flexible structure that avoids the committal ...e5 break of the Najdorf and the sharp fianchetto of the Dragon. The Scheveningen was Kasparov's main weapon against 1.e4; its reputation was partly eclipsed by the Keres Attack (6.g4), a brutal pawn push that Black struggles to meet, which led most top players to prefer the Najdorf with ...e6 move-order trickery to avoid the Keres. But the Scheveningen itself remains completely sound and full of fighting content: flexible piece development (...Nc6, ...Be7, ...O-O, ...Bd7, ...Rc8, ...Qc7 or ...a6-...b5), patient middlegame play, and sharp breaks with ...d5 or ...e5 at the right moment.",
+  themes: [
+    'Small centre (d6, e6) — maximum flexibility',
+    'Keres Attack (6.g4) — White\'s most direct try',
+    'English Attack vs. Scheveningen (6.Be3)',
+    'Classical 6.Be2 with O-O, f4, Qe1-g3',
+    'Thematic ...d5 break to equalise structurally',
+  ],
+  pawnStructures: [
+    {
+      name: 'Scheveningen pawn structure',
+      description: 'Black has pawns on a7,b7,d6,e6,f7,g7,h7 — compact and sound. The d5 and f5 squares are the key battle squares: White wants to occupy them with pieces, Black wants to break with ...d5 or ...e5.',
+    },
+  ],
+  typicalPlans: {
+    white: [
+      'Keres Attack: 6.g4! preventing ...Nc6 from settling and aiming for g5, h4-h5.',
+      'English Attack: Be3, f3, Qd2, O-O-O, g4, h4.',
+      'Classical: Be2, O-O, f4, Kh1, Bf3, Qe1-g3.',
+      'Nd5 and Nf5 leaps when tactical circumstances allow.',
+    ],
+    black: [
+      '...Nc6, ...Be7, ...O-O, ...Bd7, ...Qc7, ...a6, ...b5, ...Bb7 — full development before breaks.',
+      'Thematic ...d5 push when the centre is favourable.',
+      '...Rc8 and ...Na5-c4 or ...Nb4 outposts.',
+      'Opposite-castling attacks if White goes long.',
+    ],
+  },
+  mainLine: {
+    id: 'main',
+    name: 'Classical Scheveningen 6.Be2',
+    eco: 'B84',
+    summary: '1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 e6 6.Be2 a6 7.O-O — quiet Classical Main Line.',
+    line: [
+      { san: 'e4', comment: '' }, { san: 'c5', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'd6', comment: '' }, { san: 'd4', comment: '' }, { san: 'cxd4', comment: '' }, { san: 'Nxd4', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'e6', comment: 'The Scheveningen — small centre.', keyIdea: 'Small centre d6/e6 — flexible foundation.' },
+      { san: 'Be2', comment: "Classical — slow, sound, preparing O-O and f4.", alternatives: [ { san: 'g4', why: 'Keres Attack — sharpest try.' }, { san: 'Be3', why: 'English Attack transposition.' } ] },
+      { san: 'a6', comment: 'Planning ...b5 and ...Bb7.' },
+      { san: 'O-O', comment: '' },
+      { san: 'Be7', comment: '' },
+      { san: 'f4', comment: "Classical aggressive build-up." },
+      { san: 'O-O', comment: '' },
+      { san: 'Be3', comment: '' },
+      { san: 'Nc6', comment: '' },
+      { san: 'a4', comment: "Prophylaxis against ...b5." },
+      { san: 'Qc7', comment: 'Queen to the centre of events.' },
+      { san: 'Kh1', comment: "Standard tidying — avoids ...Nxe4 forking ideas." },
+      { san: 'Re8', comment: 'Preparing ...Bf8 and ...Bd7.' },
+    ],
+  },
+  variations: [
+    {
+      id: 'keres-attack',
+      name: 'Keres Attack 6.g4',
+      eco: 'B81',
+      summary: 'The sharpest weapon against the Scheveningen — White plays g4 immediately.',
+      line: [
+        { san: 'e4', comment: '' }, { san: 'c5', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'd6', comment: '' }, { san: 'd4', comment: '' }, { san: 'cxd4', comment: '' }, { san: 'Nxd4', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'e6', comment: '' },
+        { san: 'g4', comment: "The Keres Attack — named after Paul Keres. A brutal g-pawn thrust even before Bishop development.", keyIdea: 'g4 — direct kingside aggression.' },
+        { san: 'h6', comment: "Main move; stops g5." },
+        { san: 'h4', comment: "Prepares g5 anyway." },
+        { san: 'Nc6', comment: '' },
+        { san: 'Rg1', comment: 'Rook behind the g-pawn — all pieces support the attack.' },
+        { san: 'h5', comment: "A Black counter — preventing g5 by freezing the g-pawn." },
+        { san: 'gxh5', comment: '' },
+        { san: 'Nxh5', comment: "Recapturing with the knight." },
+        { san: 'Bg5', comment: "Pinning the knight and threatening Bxe7." },
+      ],
+    },
+    {
+      id: 'english-attack-sch',
+      name: 'English Attack vs Scheveningen 6.Be3',
+      eco: 'B80',
+      summary: 'Parallel English Attack — opposite-side castling and pawn storms.',
+      line: [
+        { san: 'e4', comment: '' }, { san: 'c5', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'd6', comment: '' }, { san: 'd4', comment: '' }, { san: 'cxd4', comment: '' }, { san: 'Nxd4', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'e6', comment: '' },
+        { san: 'Be3', comment: '' },
+        { san: 'a6', comment: '' },
+        { san: 'f3', comment: '' },
+        { san: 'b5', comment: '' },
+        { san: 'Qd2', comment: '' },
+        { san: 'Nbd7', comment: '' },
+        { san: 'g4', comment: '' },
+        { san: 'h6', comment: '' },
+        { san: 'O-O-O', comment: '' },
+        { san: 'Bb7', comment: '' },
+        { san: 'h4', comment: "The pawn storm is launched in earnest." },
+      ],
+    },
+  ],
+};

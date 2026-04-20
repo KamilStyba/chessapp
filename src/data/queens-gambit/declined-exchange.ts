@@ -1,0 +1,92 @@
+import { Lesson } from '../types';
+
+export const qgdExchange: Lesson = {
+  id: 'declined-exchange',
+  parent: 'queens-gambit',
+  title: 'QGD — Exchange Variation',
+  intro:
+    "The Exchange Variation is the purest expression of structural, strategic chess in the Queen's Gambit repertoire. With 4.cxd5 exd5 (or similar move orders), White fixes the Carlsbad pawn skeleton: White pawns on a2-b2-c3(!)-d4-e3 and Black pawns on a7-b7-c6-d5-e6. This pawn chain is the compass of the entire middlegame. White has four serious plans: (1) the minority attack on the queenside (a3, Rb1, b4-b5, bxc6 to create a weak c6); (2) the central e3-e4 break, relevant when Black has committed to a kingside setup; (3) the Pillsbury plan of Ne5, f2-f4 and a kingside attack; (4) quiet manoeuvring with Ne2-g3 to eye e4 and f5 squares. Black, correspondingly, has to choose between blunting the minority attack with ...a6/...Nb8-a6-c7/...Bf5/...Ne4 counterplay, or racing with kingside expansion ...Ne4, ...f5, ...Bd6. The Exchange is the 'grown-up' QGD: you don't win it in the first 20 moves; you win it by outplaying your opponent in a single-pawn imbalance 30 moves later.",
+  themes: [
+    'Carlsbad pawn structure understanding',
+    'Minority attack mechanics and timing',
+    'Kingside attack with f2-f4 and Ne5',
+    'Central e3-e4 break — when it liberates, when it weakens',
+    'Black\'s ...Ne4, ...f5 counter-attacks on the kingside',
+  ],
+  pawnStructures: [
+    {
+      name: 'Carlsbad structure',
+      description:
+        'The defining structure — every plan, piece placement, and trade is evaluated against this skeleton. White wants to trade dark-squared bishops (Bg5 → Bxf6) or manoeuvre Bd3-c2-b1 for the kingside attack; Black wants to hold c6 and either equalise with ...Ne4 or attack with ...f5.',
+    },
+  ],
+  typicalPlans: {
+    white: [
+      'Minority attack: a3, Rb1, Qa4 (or Qb3), b2-b4-b5 aiming at c6.',
+      'Pillsbury plan: Ne5, f2-f4, Qf3, Rf1-f3-h3, with kingside attack.',
+      'Central break: e3-e4 when Black\'s king is already committed and the centre swap favours White\'s piece activity.',
+      'Exchange dark-squared bishops with Bg5 and Bxf6 to gain long-term control of the dark squares.',
+    ],
+    black: [
+      'Stop the minority attack: ...a6, ...Ra7/...Rb8, ...Bd6, ...Re8.',
+      'Kingside counterplay: ...Ne4, ...f5, ...g5 after ...Kh7.',
+      'Trade dark-squared bishops to relieve pressure, but watch d5.',
+      'Occupy b4 with a knight (...Nb8-a6-b4) once b4 is a hole.',
+    ],
+  },
+  mainLine: {
+    id: 'main',
+    name: 'Exchange — Classical Main Line',
+    eco: 'D36',
+    summary: '1.d4 d5 2.c4 e6 3.Nc3 Nf6 4.cxd5 exd5 5.Bg5 Be7 6.e3 c6 7.Qc2 — White prepares the minority attack.',
+    line: [
+      { san: 'd4', comment: '' },
+      { san: 'd5', comment: '' },
+      { san: 'c4', comment: '' },
+      { san: 'e6', comment: '' },
+      { san: 'Nc3', comment: '' },
+      { san: 'Nf6', comment: '' },
+      { san: 'cxd5', comment: 'The Exchange. Fixes the Carlsbad structure and forecloses Black\'s ...dxc4 options.', keyIdea: 'Fix the structure, play for the minority attack.' },
+      { san: 'exd5', comment: 'Forced for structural reasons.' },
+      { san: 'Bg5', comment: 'The classical pin. Note the move order — 5.Bf4 is the Modern Exchange (below), which keeps the bishop out of ...Ne4 trades.', alternatives: [ { san: 'Bf4', why: 'Modern Exchange — avoids ...Ne4 Bxe7 trade, but the bishop is less pressing on f4.' } ] },
+      { san: 'Be7', comment: '' },
+      { san: 'e3', comment: 'Supports d4 and prepares Bd3/Nge2. White keeps the option of Ne2-g3 for kingside play.' },
+      { san: 'c6', comment: 'Completes the Carlsbad.', keyIdea: 'Carlsbad reached.' },
+      { san: 'Qc2', comment: 'The queen eyes the b1-h7 diagonal with Bd3 coming; also prepares long castling if White wants the sharper Pillsbury plan, or supports b2-b4 if White castles short.' },
+      { san: 'Nbd7', comment: '' },
+      { san: 'Bd3', comment: 'Classical bishop placement, aimed at h7.' },
+      { san: 'O-O', comment: '' },
+      { san: 'Nf3', comment: '' },
+      { san: 'Re8', comment: '' },
+      { san: 'O-O', comment: '' },
+      { san: 'Nf8', comment: 'Heading to g6 to defend h7 and prepare ...Ne4.', keyIdea: 'Black manoeuvres ...Nf8-g6 for kingside stability.' },
+      { san: 'Rab1', comment: 'Preparing b4-b5 — the minority attack begins.', keyIdea: 'Rab1 = minority attack launch.' },
+      { san: 'a5', comment: 'Black prevents b4 and keeps the queenside fluid. White now considers a3 and b4 anyway with tempo on a5.' },
+      { san: 'a3', comment: 'Preparing b4 after a thematic pawn exchange.' },
+      { san: 'Ng6', comment: '' },
+      { san: 'b4', comment: 'Thrust! White commits to the minority attack.', keyIdea: 'The classical minority attack structure.' },
+      { san: 'axb4', comment: '' },
+      { san: 'axb4', comment: 'The a-file is now open for White. Next comes b5, and Black must decide whether to allow bxc6 (weak c6) or take on b5 (creating a semi-open a-file and a weak b-file). This is the position where grandmasters earn or lose half-points for the next 30 moves.' },
+    ],
+  },
+  variations: [
+    {
+      id: 'modern-exchange',
+      name: 'Modern Exchange 5.Bf4',
+      eco: 'D35',
+      summary: 'White avoids ...Ne4 Bxe7 trades by placing the bishop on f4.',
+      line: [
+        { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' }, { san: 'e6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'Nf6', comment: '' },
+        { san: 'cxd5', comment: '' }, { san: 'exd5', comment: '' },
+        { san: 'Bf4', comment: 'The Modern Exchange. The bishop cannot be traded off by ...Ne4, and it controls the c7-h2 diagonal, preparing Qc2 plus Bd3 with a real attacking battery.', keyIdea: 'Avoid ...Ne4 trade; retain both bishops.' },
+        { san: 'c6', comment: '' },
+        { san: 'e3', comment: '' },
+        { san: 'Bf5', comment: 'A key point: in the Modern Exchange, Black can develop the bishop outside the pawn chain before committing ...Be7.' },
+        { san: 'Qb3', comment: 'Attacking b7 and provoking structural concessions.' },
+        { san: 'Qb6', comment: '' },
+        { san: 'Qxb6', comment: '' },
+        { san: 'axb6', comment: 'The resulting endgame is only mildly unpleasant for Black thanks to the open a-file and active bishop; still, this is theory.' },
+      ],
+    },
+  ],
+};

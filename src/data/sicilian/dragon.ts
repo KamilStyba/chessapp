@@ -1,0 +1,97 @@
+import { Lesson } from '../types';
+
+export const sicDragon: Lesson = {
+  id: 'dragon',
+  parent: 'sicilian',
+  title: 'Dragon Variation',
+  intro:
+    "The Dragon (5...g6 after 1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3) takes its name from the constellation on the pawn structure (a7-c7-d6-e7-f7-g6-h7 — the shape of the dragon). Black's idea is uncompromising: fianchetto the bishop on g7 where it hammers the long diagonal and supports ...d5 counterplay. The opening is defined by extreme sharpness — in the main line (Yugoslav Attack, 9.Bc4 or 9.O-O-O), both sides castle on opposite wings and launch pawn storms at each other's kings with literally every second move. Whoever checkmates first wins. It has been said that every move in the Dragon is a matter of life or death, and Fischer once wrote: 'I play the Dragon against the Sicilian only because I want to crush people.' Modern engines have found narrow paths for Black to survive; the Dragon remains theoretically critical but practically dangerous. Kasparov, Carlsen (rarely), Topalov, Anand, and most recently Nakamura have all used it in serious games.",
+  themes: [
+    'Fianchetto on g7 — the bishop is Black\'s most important piece',
+    'Opposite-side castling and pawn storms: h4-h5-hxg6, g4-g5 for White; ...a6-...a5-...b5-b4 for Black',
+    'Exchange sacrifice ...Rxc3 — the signature Dragon defensive/attacking resource',
+    'h-file attack (White) vs. c-file attack (Black)',
+    'Sacrifices on h6, f6, and d5 from both sides',
+  ],
+  pawnStructures: [
+    {
+      name: 'Dragon structure',
+      description: "Black pawns on a7,b7,d6,e7,f7,g6,h7 and pieces on c6 (knight), g7 (bishop), c8 (bishop), e8 (rook), f8 (rook → c8 usually), plus ...a6 later. The dark-squared bishop on g7 is Black's strongest piece and cannot be traded without concession.",
+    },
+    {
+      name: 'Yugoslav Attack after exchanges',
+      description: "Typically pieces are traded fast and the remaining race is decided by who gets to the king first. Mating patterns on g2 (Black) and h7 (White) are constant.",
+    },
+  ],
+  typicalPlans: {
+    white: [
+      'Yugoslav Attack: Be3, f3, Qd2, O-O-O, Bc4/Bb3, h4-h5-hxg6.',
+      "Bh6 trade — removes Black's key bishop; often preceded by g4 and Bg2 retreat.",
+      'Nd5! sacrifice to open lines against the king.',
+      'Classical 9.O-O Bd7 10.Nb3 or 10.Qd2 — calmer but still ambitious.',
+    ],
+    black: [
+      '...a6, ...b5, ...Rc8, ...Ne5, ...Rxc3 exchange sac.',
+      '...Qa5 pressures c3 and prepares ...Rfc8.',
+      'The ...Nxd4 trade — relieves pressure but typically after ...Bd7 is developed.',
+      'Counter-attack on c-file: double rooks on c-file, then ...b4 or ...Rxc3.',
+    ],
+  },
+  mainLine: {
+    id: 'main',
+    name: 'Yugoslav Attack 9.Bc4',
+    eco: 'B78',
+    summary: '1.e4 c5 2.Nf3 d6 3.d4 cxd4 4.Nxd4 Nf6 5.Nc3 g6 6.Be3 Bg7 7.f3 O-O 8.Qd2 Nc6 9.Bc4 — the sharpest main line.',
+    line: [
+      { san: 'e4', comment: '' }, { san: 'c5', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'd6', comment: '' }, { san: 'd4', comment: '' }, { san: 'cxd4', comment: '' }, { san: 'Nxd4', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' },
+      { san: 'g6', comment: "The Dragon. Black commits to the fianchetto.", keyIdea: 'Fianchetto g7-bishop — the Dragon\'s soul.' },
+      { san: 'Be3', comment: "Preparing Qd2 and O-O-O, supporting the kingside attack." },
+      { san: 'Bg7', comment: 'Developing the bishop to its best square.' },
+      { san: 'f3', comment: "Supporting g4 and e4; defines the Yugoslav Attack.", keyIdea: 'f3 declares Yugoslav intent.' },
+      { san: 'O-O', comment: "Black castles into the impending storm — but quickly! Delay costs." },
+      { san: 'Qd2', comment: '' },
+      { san: 'Nc6', comment: '' },
+      { san: 'Bc4', comment: 'Classical Yugoslav — aims at f7 while the h-file pawn storm prepares.', alternatives: [ { san: 'O-O-O', why: 'Modern main line — delayed Bc4, aiming for fast h4-h5.' } ] },
+      { san: 'Bd7', comment: 'Completing Black\'s development before ...Rc8.' },
+      { san: 'O-O-O', comment: "Now comes the key phase." },
+      { san: 'Rc8', comment: "Aiming the rook at c3." },
+      { san: 'Bb3', comment: 'Prophylactic — dodging ...Na5 tempo and keeping b3-diagonal.' },
+      { san: 'Ne5', comment: "Centralising and preparing ...Nc4 or ...Nxe4/...d5 breaks." },
+      { san: 'h4', comment: 'The pawn storm begins — White wants h4-h5-hxg6 to destroy Black\'s kingside.', keyIdea: 'h4 starts the attack race.' },
+      { san: 'Nc4', comment: "Jumping to c4, exchanging pieces, and clearing the path for ...b5." },
+      { san: 'Bxc4', comment: '' },
+      { san: 'Rxc4', comment: "The rook lifts to c4 with an eye on a4." },
+      { san: 'h5', comment: '' },
+      { san: 'Nxh5', comment: "Taking the h-pawn to slow down the attack." },
+      { san: 'g4', comment: "Attacking the knight and preparing Bh6." },
+      { san: 'Nf6', comment: '' },
+      { san: 'Bh6', comment: "The critical move — trading dark-squared bishops to mate along the h-file." },
+      { san: 'Nxe4', comment: "The thematic defensive counter — Black sacrifices a piece to open lines for ...Rxc3." },
+      { san: 'Qe3', comment: 'Forced — protecting the e4-knight and e3-square.' },
+      { san: 'Rxc3', comment: "The signature Dragon exchange sacrifice! Black gives up the rook on c3 to destroy White's queenside pawn shield and open the c-file for the queen.", keyIdea: "...Rxc3 — the Dragon's soul." },
+      { san: 'bxc3', comment: '' },
+      { san: 'Nf6', comment: "Preserving the knight and eyeing d5/e4." },
+    ],
+  },
+  variations: [
+    {
+      id: 'classical',
+      name: 'Classical Dragon 9.O-O',
+      eco: 'B75',
+      summary: 'White castles short — quieter but still double-edged.',
+      line: [
+        { san: 'e4', comment: '' }, { san: 'c5', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'd6', comment: '' }, { san: 'd4', comment: '' }, { san: 'cxd4', comment: '' }, { san: 'Nxd4', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'g6', comment: '' },
+        { san: 'Nb3', comment: 'A rare idea — but we show it as an example of non-Yugoslav.' },
+      ],
+    },
+    {
+      id: 'accelerated-dragon-soltis',
+      name: 'Soltis Variation',
+      eco: 'B78',
+      summary: 'Black plays ...h5 to slow down the kingside pawn storm.',
+      line: [
+        { san: 'e4', comment: '' }, { san: 'c5', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'd6', comment: '' }, { san: 'd4', comment: '' }, { san: 'cxd4', comment: '' }, { san: 'Nxd4', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'g6', comment: '' }, { san: 'Be3', comment: '' }, { san: 'Bg7', comment: '' }, { san: 'f3', comment: '' }, { san: 'O-O', comment: '' }, { san: 'Qd2', comment: '' }, { san: 'Nc6', comment: '' }, { san: 'Bc4', comment: '' }, { san: 'Bd7', comment: '' }, { san: 'O-O-O', comment: '' }, { san: 'h5', comment: 'The Soltis — Black prevents h4-h5 by pushing first.', keyIdea: 'Preventive ...h5 slows the storm.' },
+      ],
+    },
+  ],
+};
