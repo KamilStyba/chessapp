@@ -1,0 +1,111 @@
+import { Lesson } from '../types';
+
+export const qgAccepted: Lesson = {
+  id: 'accepted',
+  parent: 'queens-gambit',
+  title: "Queen's Gambit Accepted (QGA)",
+  intro:
+    "After 1.d4 d5 2.c4 dxc4, Black hands the centre to White in exchange for central counterplay with ...e5 or ...c5 later. The critical move is 3.e4, grabbing the full centre immediately; the subtler 3.Nf3 prevents ...e5 and is the main line of modern practice. Black's key theoretical resource is the Classical Defence with 3...Nf6 4.e3 e6 followed by ...c5 and ...a6, holding the b5-square and preparing ...b5 to anchor the c4 pawn — not because Black wants to keep it forever, but to extract maximum concessions when White recaptures. Strategically the QGA is an Isolated Queen's Pawn battleground: after the typical sequence c4-dxc4, White's d4 eventually isolates itself after ...c5 dxc5 (or ...cxd4 exd4), and then the fight becomes: can White convert the d4-pawn's space and the e5/c5 outposts into a kingside attack before Black consolidates?",
+  themes: [
+    'Isolated Queen\'s Pawn (IQP) structures with e3/d4 vs. ...e6/...c5',
+    'Rapid development: Bxc4, Nf3, Nc3, O-O, Qe2, Rd1',
+    'Bishop on c4 eyes f7; the e4-e5 break opens the diagonal',
+    'Black\'s counterplay: ...cxd4, ...b5, ...Bb7 along the long diagonal',
+    'Endgame implications: IQP is weak if minor pieces come off, strong with heavy pieces on the board',
+  ],
+  pawnStructures: [
+    {
+      name: 'IQP on d4 (White)',
+      description:
+        'White has a pawn on d4 with half-open c- and e-files, space in the centre, and the outposts d5 and e5. Black aims to blockade d5 with a knight (typically from f6 via d7-b6 or e8-d6), trade minor pieces, and reach a winning endgame with the isolated pawn.',
+    },
+    {
+      name: 'Hanging pawns (c5-d5)',
+      description:
+        'After ...b6 and ...c5 Black sometimes arrives at hanging pawns on c5 and d5. Dynamically strong (lots of space), structurally fragile (any exchange fixes a weakness).',
+    },
+  ],
+  typicalPlans: {
+    white: [
+      'Recapture on c4 with bishop (Bxc4) to eye f7; recycle to b3 after ...b5.',
+      'Play e3 first, then d4 is supported; later push e4 to claim the full centre.',
+      'IQP middlegame: pieces before pawns — Nc3, Nf3-e5, Bg5 pin, Qd3-h3.',
+      'Against ...b5 consider a2-a4 immediately, or relocate the bishop to d3 if b5 is secured.',
+    ],
+    black: [
+      'Classical: ...Nf6, ...e6, ...c5, ...a6 and ...b5 to fix a queenside pawn chain.',
+      '...Bb7 to put long-diagonal pressure on e4 and the kingside.',
+      'Central break ...cxd4 to open the c-file for ...Rc8; blockade d4 with a knight on d5 or b6.',
+      'Trade pieces to exploit the IQP in the endgame.',
+    ],
+  },
+  mainLine: {
+    id: 'main',
+    name: 'QGA — Classical Main Line',
+    eco: 'D27',
+    summary: '1.d4 d5 2.c4 dxc4 3.Nf3 Nf6 4.e3 e6 5.Bxc4 c5 6.O-O a6 7.a4 Nc6 8.Qe2 cxd4 9.Rd1 — the main tabiya of modern practice.',
+    line: [
+      { san: 'd4', comment: "White claims the centre and prepares c2-c4. In the Queen's Gambit complex, the d4-pawn is the strategic anchor; it supports c5 and e5 outposts and keeps the long diagonal clear for a later Bb2 or Bg2.", keyIdea: 'Central anchor on d4.' },
+      { san: 'd5', comment: 'Black contests the centre symmetrically. Any other second move concedes long-term central space to White.' },
+      { san: 'c4', comment: "The Queen's Gambit. White challenges d5 to either force ...dxc4 (surrendering the centre) or pin Black into a slow setup with ...e6, ...c6, or ...Nc6. The pawn on c4 is not really sacrificed; it will be recovered with tempo.", keyIdea: 'Lever against d5.' },
+      { san: 'dxc4', comment: "The Queen's Gambit Accepted. Black accepts the material but understands it cannot be kept. The real plan is to use the tempo won by ...dxc4 to prepare ...c5 and break the centre.", alternatives: [ { san: 'e6', why: 'Queen\'s Gambit Declined — a different strategic world.' }, { san: 'c6', why: 'Slav Defence — keeps the c8-bishop free.' } ] },
+      { san: 'Nf3', comment: "Prevents 3...e5, which would equalise immediately. The alternative 3.e4 allows 3...e5 and leads to open play; 3.Nf3 is more flexible and was Kasparov's choice.", alternatives: [ { san: 'e4', why: 'Central Variation; sharp, allows 3...e5 or 3...Nf6 4.e5.' }, { san: 'e3', why: 'Old Main Line; solid but gives Black easy equality with ...e5.' } ] },
+      { san: 'Nf6', comment: 'Black develops toward e4 and prepares ...e6 and ...c5. The knight on f6 later defends h7 and aims for d5 as a blockading square.' },
+      { san: 'e3', comment: 'Supports d4 and opens the f1-bishop\'s diagonal. White deliberately delays e4; pushing now into ...c5 and ...Nc6 would leave d4 under fire.' },
+      { san: 'e6', comment: 'Frees the f8-bishop and supports ...c5. The alternative 4...Bg4 (pinning before ...e6) is possible but less flexible because Black\'s bishop commits early.' },
+      { san: 'Bxc4', comment: 'White regains the pawn with an ideal development: the bishop eyes f7, controls the a2-g8 diagonal, and supports a future d5 break. Any other recapture would be artificial.' },
+      { san: 'c5', comment: "The main break. Black must challenge d4 before White consolidates, otherwise the central pawn becomes an unassailable space advantage. After ...c5, the pawn on d4 is questioned and the structure typically becomes an IQP.", keyIdea: 'The ...c5 break is non-negotiable.' },
+      { san: 'O-O', comment: 'White castles into the classical scheme. Delaying castling here would allow ...cxd4 exd4 followed by ...Bb4+, fishing for weaknesses.' },
+      { san: 'a6', comment: 'Prepares ...b5 to kick the bishop on c4 and gain queenside space. The ...a6/...b5 duo is the signature of Black\'s QGA plan.', keyIdea: 'Queenside expansion with ...a6-...b5.' },
+      { san: 'a4', comment: 'Prevents ...b5 and claims the b5-square. The structural cost is that b4 becomes weak, so White must be careful about ...Nb4 ideas, and the a4-pawn itself is a long-term target in an endgame.', alternatives: [ { san: 'Qe2', why: 'Flexible: allows ...b5 but prepares Rd1 and a timely d5 push.' }, { san: 'Bb3', why: 'Pre-emptively sidesteps ...b5 while keeping options.' } ] },
+      { san: 'Nc6', comment: 'Develops while eyeing d4 and b4. Alternatively, 8...Nbd7 followed by ...b6 and ...Bb7 keeps the c6-square for a pawn.' },
+      { san: 'Qe2', comment: 'Connects rooks for Rd1, supports e4 and controls b5. The queen on e2 is flexible: it can swing to e4 or h4 in attack, or stay to coordinate a d4-d5 break.' },
+      { san: 'cxd4', comment: 'The structural decision: Black exchanges to create the IQP and open the c-file. Black counts on ...Be7, ...O-O, ...Nb4 or ...Na5 to blockade d4 from the outside.' },
+      { san: 'Rd1', comment: 'The main line. White places the rook behind the d-pawn — both defending it and threatening to advance d4-d5 at the right moment. The tabiya is reached; from here White considers exd4, Nxd4 or dxe6/e4 breaks depending on Black\'s setup. Modern engines evaluate this as a small but pleasant edge for White.', keyIdea: 'Rook behind the IQP, break timing becomes the game.' },
+    ],
+  },
+  variations: [
+    {
+      id: 'central-variation',
+      name: 'QGA — Central Variation 3.e4',
+      eco: 'D20',
+      summary: 'White grabs the full centre at once; Black must react with ...e5, ...Nc6 or ...Nf6 4.e5 Nd5.',
+      line: [
+        { san: 'd4', comment: '' },
+        { san: 'd5', comment: '' },
+        { san: 'c4', comment: '' },
+        { san: 'dxc4', comment: '' },
+        { san: 'e4', comment: 'The most principled; White claims the classical centre. The pawn on c4 is impossible to hold, and now Black must decide how to challenge e4.', keyIdea: 'Classical pawn duo e4/d4.' },
+        { san: 'e5', comment: 'The fighting reply. Black immediately strikes at d4, preventing White from consolidating an imposing centre. The critical continuation is 4.Nf3 exd4 5.Bxc4 when both sides have finished the opening structural fight very quickly.', alternatives: [ { san: 'Nf6', why: 'Invites 4.e5 Nd5 and a Scandinavian-style knight hunt.' }, { san: 'Nc6', why: 'Supports ...e5 but allows 4.d5 Ne5 5.f4.' } ] },
+        { san: 'Nf3', comment: 'Attacks e5. The alternative 4.d5 closes the centre prematurely and lets Black develop comfortably with ...f5 and ...Nf6.' },
+        { san: 'exd4', comment: 'Forced capture; otherwise Black loses the centre entirely.' },
+        { san: 'Bxc4', comment: 'With the c4-pawn recovered, White enjoys easy development and targets f7 along the diagonal. The opening phase is essentially over and structure-wise we have a symmetric pawn skeleton — the difference is in tempo and activity.' },
+      ],
+    },
+    {
+      id: 'alekhine-system',
+      name: 'QGA — Alekhine/Mannheim 4.Qa4+',
+      eco: 'D23',
+      summary: 'White recovers the pawn immediately with check and plays a positional, low-theory game.',
+      line: [
+        { san: 'd4', comment: '' },
+        { san: 'd5', comment: '' },
+        { san: 'c4', comment: '' },
+        { san: 'dxc4', comment: '' },
+        { san: 'Nf3', comment: '' },
+        { san: 'Nf6', comment: '' },
+        { san: 'Qa4+', comment: 'The queen recovers c4 with check and denies Black the ...a6/...b5 plan. The drawback: the queen commits early and can become a target after ...Nc6, ...Bd7 and ...Na5.', keyIdea: 'No theory — pure positional fight.' },
+        { san: 'Nc6', comment: 'Accepts a slightly cramped position for clear development. 4...c6 or 4...Bd7 are also sound.' },
+        { san: 'Qxc4', comment: 'White recovers material. The position is slightly more pleasant for White thanks to space, but Black has no real weaknesses.' },
+        { san: 'e6', comment: 'Prepares ...Bd6 and ...O-O. The structure resembles a Catalan without the g3-bishop.' },
+      ],
+    },
+  ],
+  commonTraps: [
+    {
+      name: 'The Greedy 3...b5?',
+      line: ['d4', 'd5', 'c4', 'dxc4', 'e4', 'b5', 'a4', 'c6', 'axb5', 'cxb5', 'Qf3'],
+      comment: 'Black tries to hold the extra pawn and loses it with interest. After 8.Qf3 the threats on a8 and b5 are decisive — Black cannot simultaneously defend the rook and the b-pawn.',
+    },
+  ],
+};

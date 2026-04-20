@@ -1,0 +1,95 @@
+import { Lesson } from '../types';
+
+export const qgSlav: Lesson = {
+  id: 'slav',
+  parent: 'queens-gambit',
+  title: 'Slav Defence',
+  intro:
+    "The Slav (1.d4 d5 2.c4 c6) was long considered a drawish, reliable fortress, until Kasparov and the computer age showed that it contains enormous fighting possibilities. Black's key idea is to support d5 with ...c6 while keeping the c8-bishop's diagonal open — a crucial improvement over the Orthodox QGD, where the bishop is notoriously passive. Black can then choose between the Main Line (...dxc4 and ...Bf5/...Bg4 development), the Exchange Slav (an innocuous-looking structure with hidden venom), the Chebanenko (...a6 first), and the razor-sharp Semi-Slav with ...e6 (a separate lesson). World Championship matches between Anand and Kramnik 2008 featured the Slav throughout, and Carlsen has used it both with White's point of view (to press) and with Black's (to defend solidly).",
+  themes: [
+    'c8-bishop freedom: ...Bf5 or ...Bg4 before the c-pawn is locked',
+    'The ...dxc4 plan: Black accepts the pawn and follows up with ...b5 to hold it',
+    'Exchange Slav symmetry — who attacks first, who controls the e-file',
+    '...a6 (Chebanenko) to prepare ...b5 without committing the d-pawn',
+    'Pawn structures with a2-b3 vs. ...a6-...b5 queenside battles',
+  ],
+  pawnStructures: [
+    {
+      name: 'Slav main line with ...dxc4 and ...b5',
+      description: 'Black takes c4 and holds with ...b5; White attacks b5 with a4 and/or b3. The game becomes a queenside tension struggle.',
+    },
+    {
+      name: 'Exchange Slav — symmetric c6/d5',
+      description: 'After 3.cxd5 cxd5, both sides have symmetric pawns. Superficially drawish, but the half-open c-file and the first-move advantage give White pressure.',
+    },
+  ],
+  typicalPlans: {
+    white: [
+      'In the main line: e3, Bxc4, O-O, Qe2, and the standard IQP/space play.',
+      'In the Exchange Slav: Nc3, Nf3, Bf4, e3, Qb3 — pressure on the b- and c-files.',
+      'Against Chebanenko: play b3 and Bd3 quietly, keep the structure flexible.',
+    ],
+    black: [
+      'Quickly develop ...Bf5 or ...Bg4 in the main line before ...e6.',
+      'Play ...dxc4 and ...b5, then ...Bb7 and ...a6.',
+      'In the Exchange Slav, ...Nc6, ...Bf5, ...e6, ...Bd6 with solid development.',
+    ],
+  },
+  mainLine: {
+    id: 'main',
+    name: 'Slav — Main Line (Smyslov Variation)',
+    eco: 'D17',
+    summary: '1.d4 d5 2.c4 c6 3.Nf3 Nf6 4.Nc3 dxc4 5.a4 Bf5 — classical Slav development.',
+    line: [
+      { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' },
+      { san: 'c6', comment: 'The Slav. Supports d5 without blocking the c8-bishop.', keyIdea: 'Defend d5, keep c8-bishop active.' },
+      { san: 'Nf3', comment: '' },
+      { san: 'Nf6', comment: '' },
+      { san: 'Nc3', comment: 'Main line. Alternatives 4.e3 (solid) and 4.Qc2 (Slow Slav) are also common.' },
+      { san: 'dxc4', comment: 'Black takes the pawn, planning to hold it with ...b5 and develop the c8-bishop first.' },
+      { san: 'a4', comment: 'Prevents ...b5. The price is the weakened b4-square, which Black will exploit later with ...Nb4 or ...Bb4.', alternatives: [ { san: 'e3', why: 'Main alternative; leads to different central play.' }, { san: 'Nd2', why: 'Regains c4 without weakening; modern trend.' } ] },
+      { san: 'Bf5', comment: "Before ...e6 closes the diagonal. This is the key benefit of the Slav over the QGD: Black's 'problem bishop' gets out to an active square.", keyIdea: 'Activate the c8-bishop before ...e6.' },
+      { san: 'e3', comment: 'Preparing Bxc4, keeping a solid structure.' },
+      { san: 'e6', comment: 'Now Black can close the diagonal because the bishop is already out.' },
+      { san: 'Bxc4', comment: '' },
+      { san: 'Bb4', comment: 'Ties the c3-knight to defence and prepares ...Nbd7, ...O-O, ...c5 or ...e5.', keyIdea: '...Bb4 pin — standard Slav piece activity.' },
+      { san: 'O-O', comment: '' },
+      { san: 'Nbd7', comment: '' },
+      { san: 'Qe2', comment: 'Connecting rooks; preparing Rd1 and e4.' },
+      { san: 'Bg6', comment: 'Protecting the bishop from future h3/g4 schemes and preparing ...Ne4 or ...O-O.' },
+      { san: 'e4', comment: 'The central break. White finally plays e4 and asks Black to show equality. Main line continues ...O-O 13.Bd3 Bh5 and complex positions.' },
+    ],
+  },
+  variations: [
+    {
+      id: 'exchange-slav',
+      name: 'Exchange Slav',
+      eco: 'D10',
+      summary: 'White trades on d5 early; quiet but subtle pressure.',
+      line: [
+        { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' }, { san: 'c6', comment: '' },
+        { san: 'cxd5', comment: 'The Exchange Slav.' }, { san: 'cxd5', comment: '' },
+        { san: 'Nc3', comment: '' }, { san: 'Nf6', comment: '' },
+        { san: 'Nf3', comment: '' }, { san: 'Nc6', comment: '' },
+        { san: 'Bf4', comment: "The key move. White's bishop on f4 watches c7 and prepares e3 + Bd3 or a potential kingside attack. Black's main response is 6...Bf5 mirroring, leading to a tense symmetrical game.", keyIdea: 'Bf4 — modern Exchange Slav setup.' },
+        { san: 'Bf5', comment: 'Mirror development.' },
+        { san: 'e3', comment: '' },
+        { san: 'e6', comment: '' },
+        { san: 'Qb3', comment: 'Attacks b7 and provokes concessions.' },
+        { san: 'Bb4', comment: "Pinning the knight — Black's best reply; ...Qc8 or ...Qd7 would be too passive." },
+      ],
+    },
+    {
+      id: 'chebanenko',
+      name: 'Chebanenko Slav (...a6)',
+      eco: 'D10',
+      summary: 'An ultra-flexible system popularised by Moldovan players.',
+      line: [
+        { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' }, { san: 'c6', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' },
+        { san: 'a6', comment: "The Chebanenko. Black prepares ...b5 without committing ...dxc4 yet. The position keeps maximum flexibility and forces White to choose a specific plan.", keyIdea: '...a6 before ...b5, ...dxc4, or ...e6 — maximum flexibility.' },
+        { san: 'c5', comment: 'Principled — tries to exploit Black\'s slow development.' },
+        { san: 'e6', comment: 'Prepares ...b6 and ...a5.' },
+      ],
+    },
+  ],
+};
