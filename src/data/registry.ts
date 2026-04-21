@@ -6,6 +6,7 @@ import { qgdOrthodox } from './queens-gambit/declined-orthodox';
 import { qgdExchange } from './queens-gambit/declined-exchange';
 import { qgdCambridgeSprings } from './queens-gambit/declined-cambridge';
 import { qgdRagozin } from './queens-gambit/declined-ragozin';
+import { qgdVienna } from './queens-gambit/declined-vienna';
 import { qgSlav } from './queens-gambit/slav';
 import { qgSemiSlav } from './queens-gambit/semi-slav';
 import { qgTarrasch } from './queens-gambit/tarrasch';
@@ -17,6 +18,7 @@ import { sicNajdorf } from './sicilian/najdorf';
 import { sicDragon } from './sicilian/dragon';
 import { sicScheveningen } from './sicilian/scheveningen';
 import { sicSveshnikov } from './sicilian/sveshnikov';
+import { sicKalashnikov } from './sicilian/kalashnikov';
 import { sicClassical } from './sicilian/classical';
 import { sicTaimanovKan } from './sicilian/taimanov-kan';
 import { sicAcceleratedDragon } from './sicilian/accelerated-dragon';
@@ -38,6 +40,7 @@ const qgLessons: Lesson[] = [
   qgdExchange,
   qgdCambridgeSprings,
   qgdRagozin,
+  qgdVienna,
   qgSlav,
   qgSemiSlav,
   qgTarrasch,
@@ -49,6 +52,7 @@ const sicLessons: Lesson[] = [
   sicDragon,
   sicScheveningen,
   sicSveshnikov,
+  sicKalashnikov,
   sicClassical,
   sicTaimanovKan,
   sicAcceleratedDragon,

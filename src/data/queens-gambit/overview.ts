@@ -19,6 +19,7 @@ export const queensGambitOverview: OpeningOverview = {
     { id: 'declined-exchange', title: 'QGD — Exchange Variation', blurb: 'White trades c4xd5 early to fix Black\'s structure and launch the minority attack with b4-b5.' },
     { id: 'declined-cambridge', title: 'QGD — Cambridge Springs', blurb: '...Qa5 — an active try pinning c3 and eyeing Bg5; demands precise piece coordination from White.' },
     { id: 'declined-ragozin', title: 'QGD — Ragozin', blurb: '4...Bb4 — a hybrid of QGD and Nimzo-Indian; fights for e4 and doubles c-pawns.' },
+    { id: 'declined-vienna', title: 'QGD — Vienna Variation', blurb: '4...dxc4 5.e4 Bb4 — computer-era theoretical battleground; Kramnik & Caruana weapon.' },
     { id: 'slav', title: 'Slav Defence', blurb: '2...c6 — Black keeps the light-squared bishop free on c8 before playing ...e6.' },
     { id: 'semi-slav', title: 'Semi-Slav', blurb: '...e6 and ...c6 — solid triangle; Meran, Anti-Meran, Moscow, Anti-Moscow, Botvinnik.' },
     { id: 'tarrasch', title: 'Tarrasch Defence', blurb: '3...c5 — Black accepts an IQP for fast development and open lines.' },

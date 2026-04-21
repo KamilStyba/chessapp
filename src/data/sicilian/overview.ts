@@ -18,6 +18,7 @@ export const sicilianOverview: OpeningOverview = {
     { id: 'dragon', title: 'Dragon Variation', blurb: '5...g6 — fianchetto on g7; razor-sharp Yugoslav Attack with opposite-side castling.' },
     { id: 'scheveningen', title: 'Scheveningen', blurb: '5...e6 and ...d6 — small centre, huge flexibility; Keres Attack, English Attack.' },
     { id: 'sveshnikov', title: 'Sveshnikov Variation', blurb: '4...Nf6 5.Nc3 e5 — modern main line; Carlsen used it to beat Caruana in 2018.' },
+    { id: 'kalashnikov', title: 'Kalashnikov Variation', blurb: '4...e5 before ...Nf6 — younger cousin of the Sveshnikov with different move-order tricks.' },
     { id: 'classical', title: 'Classical Sicilian', blurb: '5...Nc6 — Richter-Rauzer complex.' },
     { id: 'taimanov-kan', title: 'Taimanov & Kan', blurb: '4...Nc6 or 4...a6 with ...e6; flexible queenside development.' },
     { id: 'accelerated-dragon', title: 'Accelerated Dragon', blurb: '2...Nc6 3...g6 — fianchetto early, avoid Yugoslav Attack via Maroczy Bind.' },

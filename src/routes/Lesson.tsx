@@ -6,6 +6,7 @@ import { AnnotatedMove, Variation } from '../data/types';
 import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
 import { VariationTree } from '../components/VariationTree';
+import { EvalBar } from '../components/EvalBar';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -51,6 +52,7 @@ export function Lesson() {
 
   const sanList = useMemo(() => data?.line.map((m) => m.san) ?? [], [data]);
   const [ply, setPly] = useState(0);
+  const [engineOn, setEngineOn] = useState(false);
 
   useEffect(() => {
     setPly(0);
@@ -94,7 +96,10 @@ export function Lesson() {
 
       <div className="lesson-grid-2col">
         <div className="board-col">
-          <Board fen={fen} arePiecesDraggable={false} />
+          <div className="board-with-eval">
+            <Board fen={fen} arePiecesDraggable={false} />
+            <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
+          </div>
           <div className="board-controls">
             <button onClick={() => goto(0)} aria-label="Reset">⏮</button>
             <button onClick={() => goto(ply - 1)} aria-label="Back">◀</button>

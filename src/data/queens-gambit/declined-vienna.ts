@@ -1,0 +1,111 @@
+import { Lesson } from '../types';
+
+export const qgdVienna: Lesson = {
+  id: 'declined-vienna',
+  parent: 'queens-gambit',
+  title: 'QGD — Vienna Variation',
+  intro:
+    "The Vienna Variation (1.d4 d5 2.c4 e6 3.Nf3 Nf6 4.Nc3 dxc4 5.e4 Bb4) is one of the most concrete and theoretically deep lines in the entire Queen's Gambit. Black declines the Gambit for two moves, accepts the pawn on the third, and then uses the e4-thrust by White to generate immediate piece activity with ...Bb4 pinning the c3-knight. The move-order is crucial: by inserting ...Nf6 and waiting for 4.Nc3, Black avoids the Ragozin-style 4.Nc3 Bb4 structures and instead reaches a dynamic position where the pawn on c4 becomes a real asset — White must spend time retrieving it, often with 6.Bxc4 or via the sharper 6.Bg5. The Vienna has been a main weapon for Kramnik, Aronian, Caruana, Mamedyarov and Ding; it was crucial in Kramnik's 2006 match against Topalov. The resulting positions are computer-era chess: razor-sharp, with long forced sequences, opposite-side castling or early queen trades, and a fine balance between White's bishop pair plus centre and Black's piece activity plus open lines. Unlike most QGD lines it is inherently unbalanced — draws are rare, decisive results are common at the top level.",
+  themes: [
+    '...dxc4 + ...Bb4 pin: gain tempo and force White to recapture on c4',
+    'Bg5 pin combined with e4-e5 kicking the f6-knight — computer-era main line',
+    'Opposite-side castling races in some sub-lines',
+    'Early queen trades after ...Qa5/...Qxe5 tactical motifs',
+    'Black\'s bishop pair vs. White\'s central pawns',
+  ],
+  pawnStructures: [
+    {
+      name: 'Central e4-d4 duo',
+      description: 'After recapturing with Bxc4, White keeps an imposing e4/d4 centre; Black pressures it with ...b5, ...Bb7 and piece activity.',
+    },
+    {
+      name: 'Open c-file + hanging pieces',
+      description: 'Long forced lines often liquidate the centre entirely, leading to simplified middlegames with opposite-coloured bishops or an IQP.',
+    },
+  ],
+  typicalPlans: {
+    white: [
+      'Recapture c4 with Bxc4 and build the e4/d4 duo; aim for e4-e5 at the right moment.',
+      'Main line: 6.Bg5 c5 7.Bxc4 cxd4 8.Nxd4 — central simplification with piece play.',
+      'Place pieces actively: Qc2, O-O, Rad1; Nd4 and Bxc4-b3 for the classical setup.',
+      'Use long tactical lines that computers have discovered in the past decade.',
+    ],
+    black: [
+      '...Bb4 pin + ...c5 strike to liquidate White\'s centre quickly.',
+      '...b5 expansion after White recaptures on c4 — kicks the bishop off its diagonal.',
+      '...Bxc3+ bxc3 in some lines — damage White\'s structure for the bishop pair.',
+      'Accept simplification and rely on piece activity + bishop pair in the resulting endgame.',
+    ],
+  },
+  mainLine: {
+    id: 'main',
+    name: 'Vienna — Main Line 6.Bg5 c5',
+    eco: 'D39',
+    summary: 'Computer-era main line: Black hits the centre immediately with ...c5.',
+    line: [
+      { san: 'd4', comment: '' }, { san: 'd5', comment: '' },
+      { san: 'c4', comment: '' }, { san: 'e6', comment: '' },
+      { san: 'Nf3', comment: 'Avoids Nimzo-Indian — if 3.Nc3 Bb4 is the Nimzo.' },
+      { san: 'Nf6', comment: '' },
+      { san: 'Nc3', comment: 'Now Nc3 is fine: Black has already committed to ...Nf6.' },
+      { san: 'dxc4', comment: "The Vienna move! Black grabs the pawn; White will have to work to regain it.", keyIdea: 'The Vienna — take the pawn and pin with ...Bb4.' },
+      { san: 'e4', comment: 'The key White try — hit the centre and prepare to regain c4.', alternatives: [ { san: 'a4', why: 'Prevents ...b5 but gives up central aggression.' }, { san: 'e3', why: 'Quiet — accepts the Ragozin-like pawn structure but loses the theoretical fight.' } ] },
+      { san: 'Bb4', comment: 'The Vienna structure: pin the c3-knight, threaten ...Nxe4.', keyIdea: 'Pin the knight, threaten ...Nxe4.' },
+      { san: 'Bg5', comment: 'The sharpest try. White pins f6 in return; both sides rely on tactics.', alternatives: [ { san: 'Bxc4', why: 'Solid — White regains the pawn and plays for central control.' }, { san: 'e5', why: 'The direct shot — kicks the knight to d7 or g4; ambitious but risky.' } ] },
+      { san: 'c5', comment: "Striking at the centre! Now 7.Bxc4 cxd4 8.Nxd4 is the critical tabiya." },
+      { san: 'Bxc4', comment: 'White regains material.' },
+      { san: 'cxd4', comment: 'Liquidating the centre before White can consolidate.' },
+      { san: 'Nxd4', comment: '' },
+      { san: 'Bxc3+', comment: "Relieving the pin with tempo. Black wins the bishop pair and damages White's pawns.", keyIdea: "Trade off c3 — bishop pair + broken queenside." },
+      { san: 'bxc3', comment: '' },
+      { san: 'Qa5', comment: "Double-purpose: defends the bishop pair idea and threatens ...Qxc3+. White must play accurately.", keyIdea: '...Qa5 hits c3 and h5 diagonal.' },
+      { san: 'Bxf6', comment: 'Simplifying before tactics get out of hand.' },
+      { san: 'Qxc3+', comment: '' },
+      { san: 'Qd2', comment: 'Forced block — the only reasonable way to deal with the check, offering a queen trade.' },
+      { san: 'Qxd2+', comment: 'Black accepts the trade — simplification favours the side with the bishop pair.' },
+      { san: 'Kxd2', comment: "After the queen trade Black has doubled pawns after ...gxf6 but the bishop pair and open lines give roughly balanced chances. Kramnik-Topalov type endgame." },
+    ],
+  },
+  variations: [
+    {
+      id: 'bxc4-main',
+      name: 'Quiet 6.Bxc4',
+      eco: 'D37',
+      summary: 'White simply regains the pawn; a strategic rather than tactical battle.',
+      line: [
+        { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' }, { san: 'e6', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'dxc4', comment: '' }, { san: 'e4', comment: '' }, { san: 'Bb4', comment: '' },
+        { san: 'Bxc4', comment: 'Simple — win back the pawn without going into sharp theory.', keyIdea: 'Solid main line; aim for central dominance.' },
+        { san: 'Nxe4', comment: 'The critical attempt to exploit the pin.' },
+        { san: 'O-O', comment: 'Ignoring material temporarily — the pin on c3 is broken by tactical means.' },
+        { san: 'Nxc3', comment: '' },
+        { san: 'bxc3', comment: '' },
+        { san: 'Be7', comment: "Black retreats with an extra pawn but White has a huge lead in development and the bishop pair. Theory considers this balanced." },
+      ],
+    },
+    {
+      id: 'e5-try',
+      name: 'Direct 6.e5',
+      eco: 'D39',
+      summary: 'The ambitious kick: White chases the f6-knight and fights for the centre.',
+      line: [
+        { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' }, { san: 'e6', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'dxc4', comment: '' }, { san: 'e4', comment: '' }, { san: 'Bb4', comment: '' },
+        { san: 'e5', comment: "Aggressive — kicking the knight and grabbing space.", keyIdea: 'Space for activity — the bishop pair and central duo as assets.' },
+        { san: 'h6', comment: 'Preventing Bg5 and making luft.' },
+        { san: 'Bxc4', comment: 'Regain the pawn; central pawns still look imposing.' },
+        { san: 'Nd5', comment: "The key — the knight jumps to the d5 outpost left by the advanced e5-pawn." },
+        { san: 'Bd2', comment: 'Unpinning and preparing queenside castling.' },
+        { san: 'Nxc3', comment: '' },
+        { san: 'Bxc3', comment: '' },
+        { san: 'Bxc3+', comment: '' },
+        { san: 'bxc3', comment: "Bishop pair traded; Black has freed development and White has the central duo — a nuanced middlegame." },
+      ],
+    },
+  ],
+  commonTraps: [
+    {
+      name: 'Bxc4 Nxe4?? — Qa4+ fork',
+      line: ['d4', 'd5', 'c4', 'e6', 'Nf3', 'Nf6', 'Nc3', 'dxc4', 'e4', 'Bb4', 'Bxc4', 'Nxe4', 'Qa4+'],
+      comment: "Greedy 6...Nxe4?? fails to 7.Qa4+! — a killer fork. The queen attacks both the knight on e4 (via the c3-knight pin being broken) and the bishop on b4. Black loses material; for example 7...Nc6 8.Bxf7+ K-moves 9.Ne5 with a crushing attack, or 7...Bd7 8.Qxb4 winning the bishop. The pin on c3 is only good while the f8-bishop is defended.",
+    },
+  ],
+};

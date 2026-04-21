@@ -56,4 +56,42 @@ export const qgGames: MasterGame[] = [
       13: 'After the trades Black has achieved complete equality with an active bishop pair and open c-file.',
     },
   },
+  {
+    id: 'qga-central-expansion-model',
+    opening: 'queens-gambit',
+    lessonId: 'accepted',
+    white: 'Model Game',
+    black: 'Model Game',
+    event: 'QGA Central Expansion — Teaching Model',
+    year: 2024,
+    result: '1/2-1/2',
+    intro:
+      "Model QGA with the main-line 3.Nf3 Nf6 4.e3 e6 setup. White recaptures c4 with the bishop and later plays the key central break, demonstrating why Black must time ...cxd4 precisely. The game shows the typical IQP-or-not decision that defines every QGA middlegame.",
+    pgn: '1. d4 d5 2. c4 dxc4 3. Nf3 Nf6 4. e3 e6 5. Bxc4 c5 6. O-O a6 7. a4 Nc6 8. Nc3 Be7 9. Qe2 cxd4 10. Rd1 O-O 11. exd4 Nb4 12. Ne5 Bd7 13. Bg5 Bc6 14. Nxc6 Nxc6 15. d5 exd5 16. Nxd5 Nxd5 17. Rxd5 Qxd5 18. Bxe7',
+    annotations: {
+      7: "7.a4 — preventing ...b5 expansion. Without this, Black plays ...b5 with great queenside space.",
+      9: "9.Qe2! — clearing d1 for the rook and defending the bishop if ...b5 comes.",
+      15: '15.d5! — the thematic IQP break; White is willing to trade the centre for piece activity.',
+      18: "18.Bxe7 — the dust settles: queens traded, material equal, a sterile position representing the main-line QGA assessment: slight White edge, full Black equality after accurate defence.",
+    },
+  },
+  {
+    id: 'semi-slav-meran-model',
+    opening: 'queens-gambit',
+    lessonId: 'semi-slav',
+    white: 'Model Game',
+    black: 'Model Game',
+    event: 'Semi-Slav Meran — Teaching Model',
+    year: 2024,
+    result: '1-0',
+    intro:
+      "Textbook Meran: Black expands with ...dxc4 + ...b5 and reaches the critical tabiya with ...c5 and ...Bb7. White responds with the main-line e4-d5 thrust, leading to a king-hunt after ...Qc7 drops a crucial tempo. Shows how dangerous the Meran can be for Black when timing fails.",
+    pgn: '1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. e3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8. Bd3 Bb7 9. O-O a6 10. e4 c5 11. d5 Qc7 12. dxe6 fxe6 13. Bc2 c4 14. Nd4 Nc5 15. b4 cxb3 16. axb3 Bd6 17. f4',
+    annotations: {
+      10: "10.e4 — the signature Meran move. White stakes out the centre and prepares d4-d5.",
+      11: "11.d5! — the thematic central breakthrough, opening lines against Black's uncastled king.",
+      13: "13.Bc2! — unloading the bishop from the c-file and preparing Qd3 with an attack on h7.",
+      17: '17.f4! — preparing f5 and a pawn storm; Black is in serious trouble because the king is still on e8.',
+    },
+  },
 ];
