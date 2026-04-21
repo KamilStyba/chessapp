@@ -4,6 +4,7 @@ import { Chess } from 'chess.js';
 import { findGame, findOpening } from '../data/registry';
 import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
+import { EvalBar } from '../components/EvalBar';
 
 function parsePgn(pgn: string): string[] {
   const chess = new Chess();
@@ -20,6 +21,7 @@ export function MasterGameView() {
   const game = findGame(gameId ?? '');
   const sanList = useMemo(() => (game ? parsePgn(game.pgn) : []), [game]);
   const [ply, setPly] = useState(0);
+  const [engineOn, setEngineOn] = useState(false);
 
   useEffect(() => {
     setPly(0);
@@ -70,7 +72,10 @@ export function MasterGameView() {
 
       <div className="lesson-grid-2col">
         <div className="board-col">
-          <Board fen={fen} arePiecesDraggable={false} />
+          <div className="board-with-eval">
+            <Board fen={fen} arePiecesDraggable={false} />
+            <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
+          </div>
           <div className="board-controls">
             <button onClick={() => setPly(0)} aria-label="Reset">⏮</button>
             <button onClick={() => setPly(Math.max(0, ply - 1))} aria-label="Back">◀</button>

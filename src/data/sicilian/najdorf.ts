@@ -122,6 +122,25 @@ export const sicNajdorf: Lesson = {
         { san: 'Nd5', comment: "White's thematic centralisation — aiming to control d5." },
       ],
     },
+    {
+      id: 'adams-h3',
+      name: 'Adams Attack 6.h3',
+      eco: 'B90',
+      summary: 'A flexible modern try: White prepares g2-g4 without committing pieces; Adams, Grischuk, and MVL made it a serious main line.',
+      line: [
+        { san: 'e4', comment: '' }, { san: 'c5', comment: '' }, { san: 'Nf3', comment: '' }, { san: 'd6', comment: '' }, { san: 'd4', comment: '' }, { san: 'cxd4', comment: '' }, { san: 'Nxd4', comment: '' }, { san: 'Nf6', comment: '' }, { san: 'Nc3', comment: '' }, { san: 'a6', comment: '' },
+        { san: 'h3', comment: "The Adams Attack — preparing g4 and keeping piece placement flexible. Modern top-level tournaments are full of this line.", keyIdea: 'h3 + g4: same storm, smarter move order.', alternatives: [ { san: 'Be3', why: 'English Attack — main line.' }, { san: 'Bg5', why: '6.Bg5 main line and Poisoned Pawn complex.' } ] },
+        { san: 'e5', comment: 'Principal — stake a claim in the centre. 6...e6 and 6...b5 are also playable.' },
+        { san: 'Nde2', comment: "The knight goes to g3 via e2 — accepting an unusual square to support the g4 pawn storm." },
+        { san: 'h5', comment: "Preventing g4 — the modern universal response to these kingside storms." },
+        { san: 'g3', comment: "Unusual-looking but logical: preparing Bg2 with solid development." },
+        { san: 'b5', comment: "Expanding on the queenside; Black is doing fine in this flexible position." },
+        { san: 'Bg2', comment: "" },
+        { san: 'Bb7', comment: "" },
+        { san: 'O-O', comment: "White castles first — opposite-side castling ideas are off the table now." },
+        { san: 'Nbd7', comment: "Black develops normally; the game is roughly balanced with a long strategic battle ahead." },
+      ],
+    },
   ],
   commonTraps: [
     {

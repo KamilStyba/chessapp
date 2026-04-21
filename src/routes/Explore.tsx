@@ -3,11 +3,13 @@ import { useMemo, useState } from 'react';
 import { Chess } from 'chess.js';
 import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
+import { EvalBar } from '../components/EvalBar';
 import { detectOpening } from '../engine/detectOpening';
 
 export function Explore() {
   const [moves, setMoves] = useState<string[]>([]);
   const [ply, setPly] = useState(0);
+  const [engineOn, setEngineOn] = useState(false);
 
   const chess = useMemo(() => {
     const c = new Chess();
@@ -58,7 +60,10 @@ export function Explore() {
 
       <div className="lesson-grid-2col">
         <div className="board-col">
-          <Board fen={fen} onPieceDrop={onPieceDrop} arePiecesDraggable />
+          <div className="board-with-eval">
+            <Board fen={fen} onPieceDrop={onPieceDrop} arePiecesDraggable />
+            <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
+          </div>
           <div className="board-controls">
             <button onClick={() => setPly(0)} aria-label="Reset">⏮</button>
             <button onClick={() => setPly(Math.max(0, ply - 1))} aria-label="Back">◀</button>
