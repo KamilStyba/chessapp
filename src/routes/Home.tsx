@@ -51,6 +51,14 @@ export function Home() {
       </section>
 
       <section className="feature-row">
+        <Link to="/puzzles" className="feature">
+          <h3>🧩 Tactical Puzzles</h3>
+          <p>
+            Solve signature positions from each variation — Nd5 outposts,
+            Dragon exchange sacs, IQP breaks, minority attacks. Drag the key
+            move; read the grandmaster explanation.
+          </p>
+        </Link>
         <Link to="/explore" className="feature">
           <h3>🧭 Explore Mode</h3>
           <p>

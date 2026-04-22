@@ -4,7 +4,8 @@ import { Chess } from 'chess.js';
 import { findGame, findOpening } from '../data/registry';
 import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
-import { EvalBar } from '../components/EvalBar';
+import { EvalBar, MultiPvPanel } from '../components/EvalBar';
+import { useKeyboardNavigation } from '../engine/useKeyboardNavigation';
 
 function parsePgn(pgn: string): string[] {
   const chess = new Chess();
@@ -22,6 +23,15 @@ export function MasterGameView() {
   const sanList = useMemo(() => (game ? parsePgn(game.pgn) : []), [game]);
   const [ply, setPly] = useState(0);
   const [engineOn, setEngineOn] = useState(false);
+  const [orientation, setOrientation] = useState<'white' | 'black'>('white');
+
+  useKeyboardNavigation({
+    onPrev: () => setPly((p) => Math.max(0, p - 1)),
+    onNext: () => setPly((p) => Math.min(sanList.length, p + 1)),
+    onHome: () => setPly(0),
+    onEnd: () => setPly(sanList.length),
+    onFlip: () => setOrientation((o) => (o === 'white' ? 'black' : 'white')),
+  });
 
   useEffect(() => {
     setPly(0);
@@ -73,19 +83,21 @@ export function MasterGameView() {
       <div className="lesson-grid-2col">
         <div className="board-col">
           <div className="board-with-eval">
-            <Board fen={fen} arePiecesDraggable={false} />
+            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} />
             <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
           </div>
           <div className="board-controls">
-            <button onClick={() => setPly(0)} aria-label="Reset">⏮</button>
-            <button onClick={() => setPly(Math.max(0, ply - 1))} aria-label="Back">◀</button>
-            <button onClick={() => setPly(Math.min(sanList.length, ply + 1))} aria-label="Next" className="primary">▶</button>
-            <button onClick={() => setPly(sanList.length)} aria-label="End">⏭</button>
+            <button onClick={() => setPly(0)} aria-label="Reset" title="Home">⏮</button>
+            <button onClick={() => setPly(Math.max(0, ply - 1))} aria-label="Back" title="← / k">◀</button>
+            <button onClick={() => setPly(Math.min(sanList.length, ply + 1))} aria-label="Next" className="primary" title="→ / j / space">▶</button>
+            <button onClick={() => setPly(sanList.length)} aria-label="End" title="End">⏭</button>
+            <button onClick={() => setOrientation((o) => o === 'white' ? 'black' : 'white')} aria-label="Flip" title="f">⇅</button>
           </div>
           <MoveList moves={sanList} currentPly={ply} onJump={setPly} />
         </div>
 
         <div className="info-col">
+          <MultiPvPanel fen={fen} enabled={engineOn} />
           <section className="annotation-panel">
             <h2>
               {currentSan
