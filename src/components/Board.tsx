@@ -1,6 +1,8 @@
 import { useEffect, useState, CSSProperties } from 'react';
 import { Chessboard } from 'react-chessboard';
 import { BOARD_PALETTES, usePrefs } from '../prefs';
+import { playCaptureSound, playMoveSound } from '../engine/sound';
+import { Chess } from 'chess.js';
 
 interface Props {
   fen: string;
@@ -17,6 +19,16 @@ function computeWidth(): number {
   const max = 560;
   const sideWidth = window.innerWidth >= 900 ? Math.min(window.innerWidth * 0.55, 640) : window.innerWidth;
   return Math.max(240, Math.min(sideWidth - padding, max));
+}
+
+function wouldCapture(fen: string, from: string, to: string): boolean {
+  try {
+    const c = new Chess(fen);
+    const piece = c.get(to as any);
+    return !!piece;
+  } catch {
+    return false;
+  }
 }
 
 export function Board({
@@ -41,11 +53,22 @@ export function Board({
     };
   }, []);
 
+  const handleDrop = onPieceDrop
+    ? (from: string, to: string, piece: string) => {
+        const capture = wouldCapture(fen, from, to);
+        const ok = onPieceDrop(from, to, piece);
+        if (ok && prefs.sound) {
+          capture ? playCaptureSound() : playMoveSound();
+        }
+        return ok;
+      }
+    : undefined;
+
   return (
     <div className="board-wrap" style={{ width, maxWidth: '100%' }}>
       <Chessboard
         position={fen}
-        onPieceDrop={onPieceDrop ? (from, to, piece) => onPieceDrop(from, to, piece) : undefined}
+        onPieceDrop={handleDrop}
         arePiecesDraggable={arePiecesDraggable && !!onPieceDrop}
         boardOrientation={boardOrientation}
         boardWidth={width}

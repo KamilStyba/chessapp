@@ -76,7 +76,7 @@ export function Settings() {
       </section>
 
       <section className="settings-section">
-        <h2>Arrows</h2>
+        <h2>Arrows &amp; sound</h2>
         <label className="toggle">
           <input
             type="checkbox"
@@ -85,6 +85,28 @@ export function Settings() {
           />
           <span>Show arrows for key ideas and alternatives on lesson boards</span>
         </label>
+        <label className="toggle">
+          <input
+            type="checkbox"
+            checked={prefs.sound}
+            onChange={(e) => setPrefs({ sound: e.target.checked })}
+          />
+          <span>Play sound effects when a piece moves or captures</span>
+        </label>
+      </section>
+
+      <section className="settings-section">
+        <h2>Keyboard shortcuts</h2>
+        <table className="shortcuts">
+          <tbody>
+            <tr><td><kbd>→</kbd> / <kbd>j</kbd> / <kbd>space</kbd></td><td>Next move</td></tr>
+            <tr><td><kbd>←</kbd> / <kbd>k</kbd></td><td>Previous move</td></tr>
+            <tr><td><kbd>Home</kbd></td><td>Jump to start</td></tr>
+            <tr><td><kbd>End</kbd></td><td>Jump to end</td></tr>
+            <tr><td><kbd>f</kbd></td><td>Flip board</td></tr>
+            <tr><td><kbd>Enter</kbd> (in PGN field)</td><td>Load pasted PGN in Explore</td></tr>
+          </tbody>
+        </table>
       </section>
 
       <section className="settings-section">

@@ -88,3 +88,40 @@ export function detectOpening(playedSans: string[]): DetectionResult | null {
     matchedPlies: best.matched,
   };
 }
+
+export interface BookMoveSuggestion {
+  san: string;
+  openingTitle: string;
+  lessonTitle: string;
+  lessonId: string;
+  openingId: string;
+  variationName?: string;
+}
+
+export function nextBookMoves(playedSans: string[]): BookMoveSuggestion[] {
+  const cands = allCandidates();
+  const suggestions = new Map<string, BookMoveSuggestion>();
+  for (const cand of cands) {
+    if (cand.line.length <= playedSans.length) continue;
+    let matchesAll = true;
+    for (let i = 0; i < playedSans.length; i++) {
+      if (cand.line[i] !== playedSans[i]) {
+        matchesAll = false;
+        break;
+      }
+    }
+    if (!matchesAll) continue;
+    const nextSan = cand.line[playedSans.length];
+    if (!suggestions.has(nextSan)) {
+      suggestions.set(nextSan, {
+        san: nextSan,
+        openingTitle: cand.openingTitle,
+        lessonTitle: cand.lesson.title,
+        lessonId: cand.lesson.id,
+        openingId: cand.openingId,
+        variationName: cand.variation?.name ?? cand.subVariation?.name,
+      });
+    }
+  }
+  return Array.from(suggestions.values());
+}

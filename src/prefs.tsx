@@ -7,12 +7,14 @@ export interface Prefs {
   theme: Theme;
   boardStyle: BoardStyle;
   showArrows: boolean;
+  sound: boolean;
 }
 
 const DEFAULTS: Prefs = {
   theme: 'dark',
   boardStyle: 'classic',
   showArrows: true,
+  sound: true,
 };
 
 const KEY = 'chess-trainer-prefs-v1';

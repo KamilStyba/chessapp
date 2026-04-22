@@ -1,16 +1,43 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { Chess } from 'chess.js';
 import { findPuzzle, puzzles, findOpening } from '../data/registry';
 import { Board } from '../components/Board';
+import { loadSolved, markSolved, clearSolved } from '../data/puzzleProgress';
+import { sanToSquares } from '../engine/sanToArrow';
 
 export function PuzzlesIndex() {
+  const navigate = useNavigate();
+  const [solved, setSolved] = useState<Set<string>>(() => loadSolved());
+
   const byOpening = useMemo(() => {
     return {
       'queens-gambit': puzzles.filter((p) => p.opening === 'queens-gambit'),
       sicilian: puzzles.filter((p) => p.opening === 'sicilian'),
     };
   }, []);
+
+  const totalSolved = solved.size;
+  const total = puzzles.length;
+  const pct = total > 0 ? Math.round((totalSolved / total) * 100) : 0;
+
+  const randomUnsolved = () => {
+    const unsolved = puzzles.filter((p) => !solved.has(p.id));
+    if (unsolved.length === 0) {
+      const p = puzzles[Math.floor(Math.random() * puzzles.length)];
+      navigate(`/puzzle/${p.id}`);
+      return;
+    }
+    const p = unsolved[Math.floor(Math.random() * unsolved.length)];
+    navigate(`/puzzle/${p.id}`);
+  };
+
+  const reset = () => {
+    if (confirm('Clear all puzzle progress?')) {
+      clearSolved();
+      setSolved(new Set());
+    }
+  };
 
   return (
     <div className="puzzles-index">
@@ -21,6 +48,16 @@ export function PuzzlesIndex() {
           signature motifs of that variation — find the key move and see the
           grandmaster explanation.
         </p>
+        <div className="puzzle-progress-bar">
+          <div className="progress-row">
+            <strong>{totalSolved}</strong> / {total} solved ({pct}%)
+            <div className="progress-rail" aria-hidden>
+              <div className="progress-fill" style={{ width: `${pct}%` }} />
+            </div>
+            <button className="btn" onClick={randomUnsolved}>🎲 Random unsolved</button>
+            <button className="btn" onClick={reset}>Reset</button>
+          </div>
+        </div>
       </header>
 
       {(['queens-gambit', 'sicilian'] as const).map((oid) => {
@@ -31,17 +68,27 @@ export function PuzzlesIndex() {
           <section key={oid} className="puzzle-section">
             <h2>{op.title}</h2>
             <div className="puzzle-grid">
-              {list.map((p) => (
-                <Link key={p.id} to={`/puzzle/${p.id}`} className="puzzle-card">
-                  <div className="puzzle-difficulty">
-                    {'★'.repeat(p.difficulty)}
-                    <span className="muted">{'★'.repeat(3 - p.difficulty)}</span>
-                  </div>
-                  <h3>{p.title}</h3>
-                  <div className="puzzle-theme">{p.theme}</div>
-                  <p>{p.description}</p>
-                </Link>
-              ))}
+              {list.map((p) => {
+                const done = solved.has(p.id);
+                return (
+                  <Link
+                    key={p.id}
+                    to={`/puzzle/${p.id}`}
+                    className={`puzzle-card ${done ? 'solved' : ''}`}
+                  >
+                    <div className="puzzle-card-head">
+                      <span className="puzzle-difficulty">
+                        {'★'.repeat(p.difficulty)}
+                        <span className="muted">{'★'.repeat(3 - p.difficulty)}</span>
+                      </span>
+                      {done && <span className="badge-solved">✓ solved</span>}
+                    </div>
+                    <h3>{p.title}</h3>
+                    <div className="puzzle-theme">{p.theme}</div>
+                    <p>{p.description}</p>
+                  </Link>
+                );
+              })}
             </div>
           </section>
         );
@@ -64,6 +111,7 @@ export function PuzzleRunner() {
   const [solutionIndex, setSolutionIndex] = useState(0);
   const [status, setStatus] = useState<Status>('solving');
   const [wrongTry, setWrongTry] = useState<string | null>(null);
+  const [hintLevel, setHintLevel] = useState(0);
 
   const baseChess = useMemo(() => {
     if (!puzzle) return new Chess();
@@ -93,6 +141,7 @@ export function PuzzleRunner() {
     setSolutionIndex(0);
     setStatus('solving');
     setWrongTry(null);
+    setHintLevel(0);
   }, [puzzleId]);
 
   if (!puzzle) {
@@ -126,6 +175,7 @@ export function PuzzleRunner() {
       if (nextIndex >= puzzle.solution.length) {
         setSolutionIndex(nextIndex);
         setStatus('solved');
+        if (hintLevel === 0) markSolved(puzzle.id);
       } else {
         setSolutionIndex(nextIndex);
         setStatus('opponent');
@@ -145,9 +195,33 @@ export function PuzzleRunner() {
     setSolutionIndex(0);
     setStatus('solving');
     setWrongTry(null);
+    setHintLevel(0);
   };
 
   const opening = findOpening(puzzle.opening);
+
+  const nextSolutionMove =
+    status === 'solving' && solutionIndex < puzzle.solution.length
+      ? puzzle.solution[solutionIndex]
+      : null;
+
+  const hintSquares = useMemo(() => {
+    if (hintLevel === 0 || !nextSolutionMove) return undefined;
+    const sq = sanToSquares(fen, nextSolutionMove);
+    if (!sq) return undefined;
+    const out: Record<string, React.CSSProperties> = {};
+    if (hintLevel >= 1) {
+      out[sq[0]] = { background: 'radial-gradient(circle, rgba(242,179,61,0.55) 36%, transparent 40%)' };
+    }
+    if (hintLevel >= 2) {
+      out[sq[1]] = { background: 'radial-gradient(circle, rgba(242,179,61,0.55) 36%, transparent 40%)' };
+    }
+    return out;
+  }, [fen, hintLevel, nextSolutionMove]);
+
+  const giveHint = () => {
+    setHintLevel((l) => Math.min(2, l + 1));
+  };
 
   return (
     <div className="puzzle-page">
@@ -181,10 +255,19 @@ export function PuzzleRunner() {
             boardOrientation={userSide}
             arePiecesDraggable={isUserTurn}
             onPieceDrop={onPieceDrop}
+            customSquareStyles={hintSquares}
           />
           <div className="board-controls">
-            <button className="btn" onClick={reset}>
-              Restart puzzle
+            <button className="btn" onClick={reset}>Restart puzzle</button>
+            <button
+              className="btn"
+              onClick={giveHint}
+              disabled={hintLevel >= 2 || status !== 'solving'}
+              title="Solving unaided increases your streak — use hints sparingly"
+            >
+              {hintLevel === 0 && '💡 Hint (from-square)'}
+              {hintLevel === 1 && '💡 More hint (to-square)'}
+              {hintLevel === 2 && '💡 No more hints'}
             </button>
           </div>
         </div>
@@ -195,6 +278,11 @@ export function PuzzleRunner() {
               <>
                 <h2>Your move</h2>
                 <p>Find the key move for {userSide}.</p>
+                {hintLevel > 0 && (
+                  <p className="muted">
+                    Hints shown on the board (solving with hints won't mark this puzzle solved).
+                  </p>
+                )}
               </>
             )}
             {status === 'opponent' && (
@@ -226,21 +314,27 @@ export function PuzzleRunner() {
             {status === 'solved' && (
               <>
                 <h2>✅ Solved!</h2>
+                {hintLevel > 0 && (
+                  <p className="muted">
+                    Solved with hints — not marked as completed. Retry unaided to tick it off!
+                  </p>
+                )}
                 <p>
                   Solution:{' '}
                   <code>{puzzle.solution.join(' ')}</code>
                 </p>
                 <p>{puzzle.explanation}</p>
-                {puzzle.lessonId && (
-                  <div className="action-row">
+                <div className="action-row">
+                  <Link className="btn primary" to="/puzzles">More puzzles →</Link>
+                  {puzzle.lessonId && (
                     <Link
-                      className="btn primary"
+                      className="btn"
                       to={`/lesson/${puzzle.opening}/${puzzle.lessonId}`}
                     >
-                      Full lesson →
+                      Full lesson
                     </Link>
-                  </div>
-                )}
+                  )}
+                </div>
               </>
             )}
           </section>
