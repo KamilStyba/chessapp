@@ -61,3 +61,16 @@ export interface MasterGame {
   pgn: string;
   annotations: Record<number, string>;
 }
+
+export interface Puzzle {
+  id: string;
+  opening: 'queens-gambit' | 'sicilian';
+  lessonId?: string;
+  theme: string;
+  title: string;
+  description: string;
+  pgnPrefix: string;
+  solution: string[];
+  difficulty: 1 | 2 | 3;
+  explanation: string;
+}

@@ -1,4 +1,5 @@
-import { Lesson, MasterGame, OpeningOverview } from './types';
+import { Lesson, MasterGame, OpeningOverview, Puzzle } from './types';
+import { puzzles } from './puzzles';
 
 import { queensGambitOverview } from './queens-gambit/overview';
 import { qgAccepted } from './queens-gambit/accepted';
@@ -93,3 +94,13 @@ export function findGame(id: string): MasterGame | undefined {
   }
   return undefined;
 }
+
+export function findPuzzle(id: string): Puzzle | undefined {
+  return puzzles.find((p) => p.id === id);
+}
+
+export function puzzlesForOpening(openingId: string): Puzzle[] {
+  return puzzles.filter((p) => p.opening === openingId);
+}
+
+export { puzzles };

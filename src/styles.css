@@ -740,22 +740,134 @@ code {
   }
 }
 
-.info-col .eval-bar-info {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-  font-size: 0.8rem;
+.multipv-panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.multipv-panel h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
   color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.eval-bar-info .eval-error {
-  color: var(--red);
-}
-
-.eval-bar-info .eval-best code {
+.multipv-panel .depth-tag {
   background: var(--bg-card);
-  padding: 1px 5px;
-  border-radius: 4px;
   color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.multipv-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.multipv-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.pv-eval {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--accent);
+  min-width: 3.5rem;
+  flex: 0 0 auto;
+}
+
+.pv-moves {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+}
+
+.eval-error {
+  color: var(--red);
+  font-size: 0.85rem;
+}
+
+.puzzles-index .puzzle-section {
+  margin-top: 2rem;
+}
+
+.puzzles-index h2 {
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.4rem;
+}
+
+.puzzle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.9rem;
+}
+
+.puzzle-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 120ms, transform 120ms;
+}
+
+.puzzle-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.puzzle-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.puzzle-difficulty {
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+}
+
+.puzzle-difficulty .muted {
+  color: var(--border);
+}
+
+.puzzle-theme {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.puzzle-card p {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.puzzle-page .board-controls {
+  justify-content: flex-start;
 }

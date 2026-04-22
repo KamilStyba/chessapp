@@ -6,7 +6,8 @@ import { AnnotatedMove, Variation } from '../data/types';
 import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
 import { VariationTree } from '../components/VariationTree';
-import { EvalBar } from '../components/EvalBar';
+import { EvalBar, MultiPvPanel } from '../components/EvalBar';
+import { useKeyboardNavigation } from '../engine/useKeyboardNavigation';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -53,6 +54,7 @@ export function Lesson() {
   const sanList = useMemo(() => data?.line.map((m) => m.san) ?? [], [data]);
   const [ply, setPly] = useState(0);
   const [engineOn, setEngineOn] = useState(false);
+  const [orientation, setOrientation] = useState<'white' | 'black'>('white');
 
   useEffect(() => {
     setPly(0);
@@ -70,6 +72,14 @@ export function Lesson() {
 
   const goto = (p: number) =>
     setPly(Math.max(0, Math.min(p, sanList.length)));
+
+  useKeyboardNavigation({
+    onPrev: () => setPly((p) => Math.max(0, p - 1)),
+    onNext: () => setPly((p) => Math.min(sanList.length, p + 1)),
+    onHome: () => setPly(0),
+    onEnd: () => setPly(sanList.length),
+    onFlip: () => setOrientation((o) => (o === 'white' ? 'black' : 'white')),
+  });
 
   const currentAnnotation = ply > 0 ? data.line[ply - 1] : null;
   const nextMove = ply < data.line.length ? data.line[ply] : null;
@@ -97,19 +107,21 @@ export function Lesson() {
       <div className="lesson-grid-2col">
         <div className="board-col">
           <div className="board-with-eval">
-            <Board fen={fen} arePiecesDraggable={false} />
+            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} />
             <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
           </div>
           <div className="board-controls">
-            <button onClick={() => goto(0)} aria-label="Reset">⏮</button>
-            <button onClick={() => goto(ply - 1)} aria-label="Back">◀</button>
-            <button onClick={() => goto(ply + 1)} aria-label="Next" className="primary">▶</button>
-            <button onClick={() => goto(sanList.length)} aria-label="End">⏭</button>
+            <button onClick={() => goto(0)} aria-label="Reset" title="Home">⏮</button>
+            <button onClick={() => goto(ply - 1)} aria-label="Back" title="← / k">◀</button>
+            <button onClick={() => goto(ply + 1)} aria-label="Next" className="primary" title="→ / j / space">▶</button>
+            <button onClick={() => goto(sanList.length)} aria-label="End" title="End">⏭</button>
+            <button onClick={() => setOrientation((o) => o === 'white' ? 'black' : 'white')} aria-label="Flip" title="f">⇅</button>
           </div>
           <MoveList moves={sanList} currentPly={ply} onJump={goto} />
         </div>
 
         <div className="info-col">
+          <MultiPvPanel fen={fen} enabled={engineOn} />
           <section className="annotation-panel">
             <h2>
               {currentAnnotation

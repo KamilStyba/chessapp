@@ -12,6 +12,7 @@ export function NavBar() {
       <div className="nav-links">
         <Link className={is('/opening/queens-gambit') ? 'active' : ''} to="/opening/queens-gambit">Queen's Gambit</Link>
         <Link className={is('/opening/sicilian') ? 'active' : ''} to="/opening/sicilian">Sicilian</Link>
+        <Link className={is('/puzzles') || is('/puzzle') ? 'active' : ''} to="/puzzles">Puzzles</Link>
         <Link className={is('/explore') ? 'active' : ''} to="/explore">Explore</Link>
       </div>
     </nav>

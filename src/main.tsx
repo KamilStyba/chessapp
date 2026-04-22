@@ -8,6 +8,7 @@ import { Lesson } from './routes/Lesson';
 import { Quiz } from './routes/Quiz';
 import { Explore } from './routes/Explore';
 import { MasterGameView } from './routes/MasterGame';
+import { PuzzlesIndex, PuzzleRunner } from './routes/Puzzles';
 import './styles.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -24,6 +25,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/quiz/:openingId/:lessonId/:variationId" element={<Quiz />} />
           <Route path="/explore" element={<Explore />} />
           <Route path="/game/:gameId" element={<MasterGameView />} />
+          <Route path="/puzzles" element={<PuzzlesIndex />} />
+          <Route path="/puzzle/:puzzleId" element={<PuzzleRunner />} />
         </Route>
       </Routes>
     </HashRouter>

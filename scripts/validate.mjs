@@ -1,5 +1,6 @@
 import { Chess } from 'chess.js';
 import { openings } from '../src/data/registry.ts';
+import { puzzles } from '../src/data/puzzles.ts';
 
 let errors = 0;
 let lines = 0;
@@ -59,6 +60,36 @@ for (const op of openings) {
       errors++;
     }
   }
+}
+
+for (const p of puzzles) {
+  lines++;
+  const c = new Chess();
+  try {
+    c.loadPgn(p.pgnPrefix);
+  } catch (e) {
+    console.error(`[FAIL] puzzle ${p.id} prefix: ${e.message}`);
+    errors++;
+    continue;
+  }
+  let ok = true;
+  for (let i = 0; i < p.solution.length; i++) {
+    try {
+      const m = c.move(p.solution[i]);
+      if (!m) {
+        console.error(`[FAIL] puzzle ${p.id} — solution move ${i + 1} (${p.solution[i]}) illegal`);
+        errors++;
+        ok = false;
+        break;
+      }
+    } catch (e) {
+      console.error(`[FAIL] puzzle ${p.id} — solution move ${i + 1} (${p.solution[i]}) ${e.message}`);
+      errors++;
+      ok = false;
+      break;
+    }
+  }
+  if (!ok) continue;
 }
 
 console.log(`\n${lines} lines checked, ${errors} errors.`);
