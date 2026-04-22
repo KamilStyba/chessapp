@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+
 interface Props {
   moves: string[];
   currentPly: number;
@@ -5,6 +7,8 @@ interface Props {
 }
 
 export function MoveList({ moves, currentPly, onJump }: Props) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const rows: { num: number; white?: string; black?: string; whitePly: number; blackPly: number }[] = [];
   for (let i = 0; i < moves.length; i += 2) {
     rows.push({
@@ -16,8 +20,17 @@ export function MoveList({ moves, currentPly, onJump }: Props) {
     });
   }
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const active = el.querySelector<HTMLButtonElement>('.move.active');
+    if (active) {
+      active.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    }
+  }, [currentPly]);
+
   return (
-    <div className="movelist">
+    <div className="movelist" ref={containerRef}>
       {rows.length === 0 && <div className="movelist-empty">No moves yet.</div>}
       {rows.map((r) => (
         <div className="movelist-row" key={r.num}>

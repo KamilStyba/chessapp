@@ -5,6 +5,7 @@ import { findPuzzle, puzzles, findOpening } from '../data/registry';
 import { Board } from '../components/Board';
 import { loadSolved, markSolved, clearSolved } from '../data/puzzleProgress';
 import { sanToSquares } from '../engine/sanToArrow';
+import { lastMoveFromSans } from '../engine/lastMove';
 
 export function PuzzlesIndex() {
   const navigate = useNavigate();
@@ -256,6 +257,12 @@ export function PuzzleRunner() {
             arePiecesDraggable={isUserTurn}
             onPieceDrop={onPieceDrop}
             customSquareStyles={hintSquares}
+            lastMove={(() => {
+              if (solutionIndex === 0) return null;
+              const hist = liveChess.history({ verbose: true }) as any[];
+              const m = hist[hist.length - 1];
+              return m ? { from: m.from, to: m.to } : null;
+            })()}
           />
           <div className="board-controls">
             <button className="btn" onClick={reset}>Restart puzzle</button>

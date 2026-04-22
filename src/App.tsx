@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import { NavBar } from './components/NavBar';
+import { NavBar, BottomTabs } from './components/NavBar';
 
 export default function App() {
   return (
@@ -13,6 +13,7 @@ export default function App() {
           Chess Openings Trainer — Queen&apos;s Gambit &amp; Sicilian Defense. GM-level commentary for thorough study.
         </small>
       </footer>
+      <BottomTabs />
     </div>
   );
 }

@@ -45,3 +45,14 @@ export function playSuccessSound() {
 export function playErrorSound() {
   tone(200, 0.15, 'square', 0.12);
 }
+
+export function playCheckSound() {
+  tone(880, 0.08, 'square', 0.15);
+  setTimeout(() => tone(1100, 0.1, 'square', 0.13), 50);
+}
+
+export function playGameEndSound() {
+  tone(523, 0.12, 'sine', 0.16);
+  setTimeout(() => tone(659, 0.12, 'sine', 0.16), 110);
+  setTimeout(() => tone(784, 0.18, 'sine', 0.16), 220);
+}

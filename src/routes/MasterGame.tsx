@@ -6,6 +6,7 @@ import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
 import { EvalBar, MultiPvPanel } from '../components/EvalBar';
 import { useKeyboardNavigation } from '../engine/useKeyboardNavigation';
+import { lastMoveFromSans } from '../engine/lastMove';
 
 function parsePgn(pgn: string): string[] {
   const chess = new Chess();
@@ -83,7 +84,12 @@ export function MasterGameView() {
       <div className="lesson-grid-2col">
         <div className="board-col">
           <div className="board-with-eval">
-            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} />
+            <Board
+              fen={fen}
+              arePiecesDraggable={false}
+              boardOrientation={orientation}
+              lastMove={lastMoveFromSans(sanList, ply)}
+            />
             <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
           </div>
           <div className="board-controls">

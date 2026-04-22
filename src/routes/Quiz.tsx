@@ -4,6 +4,7 @@ import { Chess } from 'chess.js';
 import { findLesson, findOpening } from '../data/registry';
 import { AnnotatedMove, Variation } from '../data/types';
 import { Board } from '../components/Board';
+import { lastMoveFromSans } from '../engine/lastMove';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -148,6 +149,7 @@ export function Quiz() {
             boardOrientation={quizSide}
             arePiecesDraggable={isUserTurn && status !== 'done'}
             onPieceDrop={onPieceDrop}
+            lastMove={lastMoveFromSans(sanList, ply)}
           />
         </div>
 

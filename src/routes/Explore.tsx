@@ -6,6 +6,7 @@ import { MoveList } from '../components/MoveList';
 import { EvalBar } from '../components/EvalBar';
 import { detectOpening, nextBookMoves } from '../engine/detectOpening';
 import { sanToSquares } from '../engine/sanToArrow';
+import { lastMoveFromSans } from '../engine/lastMove';
 
 function sansFromPgn(pgn: string): string[] {
   try {
@@ -128,6 +129,7 @@ export function Explore() {
               arePiecesDraggable
               boardOrientation={orientation}
               customArrows={arrows}
+              lastMove={lastMoveFromSans(moves, ply)}
             />
             <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
           </div>
