@@ -973,20 +973,90 @@ code {
   cursor: pointer;
 }
 
-/* Navbar toggle for mobile */
-.nav-toggle {
+/* Mobile bottom tab bar */
+.bottom-tabs {
   display: none;
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 0.4rem;
-  padding: 0.3rem 0.6rem;
-  font-size: 1.1rem;
-  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-elev);
+  border-top: 1px solid var(--border);
+  z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom, 0);
 }
+.bottom-tabs .tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0.45rem 0.2rem;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.65rem;
+  line-height: 1;
+  min-height: 54px;
+}
+.bottom-tabs .tab.active {
+  color: var(--accent);
+}
+.bottom-tabs .tab-icon {
+  font-size: 1.2rem;
+}
+.bottom-tabs .tab-label {
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .bottom-tabs { display: flex; }
+  .app { padding-bottom: calc(60px + env(safe-area-inset-bottom, 0)); }
+  .footer { display: none; }
+  .navbar .nav-links { display: none; }
+  .navbar { padding: 0.55rem 0.75rem; }
+  .brand-name { font-size: 0.95rem; }
+  .main { padding: 0.6rem; }
+  .page-hero { padding: 0.5rem 0; }
+  .page-hero h1 { font-size: 1.35rem; }
+  .lesson-grid-2col {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .board-col { gap: 0.4rem; }
+  .board-controls {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 0.25rem;
+  }
+  .board-controls button {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.1rem;
+  }
+  .info-col { font-size: 0.93rem; }
+  .annotation-panel { padding: 0.7rem 0.85rem; }
+  .card { padding: 0.9rem 1rem; }
+  .intro-essay p { margin: 0.35rem 0; }
+  .puzzle-grid, .play-grid {
+    grid-template-columns: 1fr;
+  }
+  .drills-toolbar {
+    gap: 0.4rem;
+    padding: 0.5rem 0.65rem;
+  }
+  .drill-stats { font-size: 0.82rem; gap: 0.6rem; }
+  .paste-row { flex-direction: column; }
+  .paste-row input { font-size: 0.8rem; }
+  .page-hero h1 { word-wrap: break-word; }
+  .movelist { max-height: 140px; }
+}
+
+/* Old hidden collapsed menu (legacy) */
+.nav-toggle { display: none; }
 @media (max-width: 700px) {
-  .nav-toggle { display: inline-block; }
-  .navbar .nav-links {
+  .navbar .nav-links-hidden {
     display: none;
     position: absolute;
     top: 100%;
@@ -1063,4 +1133,124 @@ code {
 .btn.small {
   padding: 0.25rem 0.55rem;
   font-size: 0.85rem;
+}
+
+.route-loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+}
+
+.puzzle-card.solved {
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px rgba(106, 176, 76, 0.4);
+}
+.puzzle-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.badge-solved {
+  font-size: 0.75rem;
+  color: var(--green);
+  background: rgba(106, 176, 76, 0.12);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+}
+
+.puzzle-progress-bar {
+  margin-top: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem 1rem;
+}
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+}
+.progress-rail {
+  flex: 1 1 200px;
+  height: 8px;
+  background: var(--bg-elev);
+  border-radius: 999px;
+  overflow: hidden;
+  min-width: 100px;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+  transition: width 200ms;
+}
+
+.explore-paste {
+  margin: 0.75rem 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem;
+}
+.explore-paste label {
+  font-size: 0.85rem;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 0.35rem;
+}
+.paste-row {
+  display: flex;
+  gap: 0.5rem;
+}
+.paste-row input {
+  flex: 1;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 0.4rem;
+  padding: 0.45rem 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+}
+
+.suggest-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.3rem 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.suggest-list li {
+  font-size: 0.9rem;
+}
+.suggest-list code {
+  font-weight: 600;
+  background: var(--bg-elev);
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.3rem;
+}
+
+.shortcuts {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.shortcuts td {
+  padding: 0.3rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.shortcuts td:first-child {
+  white-space: nowrap;
+  color: var(--muted);
+}
+kbd {
+  font-family: var(--mono);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 0.3rem;
+  padding: 0.05rem 0.35rem;
+  font-size: 0.8rem;
 }

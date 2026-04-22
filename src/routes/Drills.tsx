@@ -4,6 +4,7 @@ import { Chess } from 'chess.js';
 import { openings } from '../data/registry';
 import { Board } from '../components/Board';
 import { AnnotatedMove } from '../data/types';
+import { lastMoveFromSans } from '../engine/lastMove';
 
 interface DrillCard {
   openingId: string;
@@ -204,6 +205,7 @@ export function Drills() {
               boardOrientation={sideToMove}
               arePiecesDraggable={status === 'ask'}
               onPieceDrop={onPieceDrop}
+              lastMove={lastMoveFromSans(card.sanList, card.ply)}
             />
             <div className="board-controls">
               <button className="btn" onClick={reveal} disabled={status !== 'ask'}>Show answer</button>

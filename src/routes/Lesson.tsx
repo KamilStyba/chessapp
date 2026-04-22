@@ -9,6 +9,7 @@ import { VariationTree } from '../components/VariationTree';
 import { EvalBar, MultiPvPanel } from '../components/EvalBar';
 import { useKeyboardNavigation } from '../engine/useKeyboardNavigation';
 import { buildArrows } from '../engine/sanToArrow';
+import { lastMoveFromSans } from '../engine/lastMove';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -90,6 +91,8 @@ export function Lesson() {
     return buildArrows(fen, nextMove.san, nextMove.alternatives);
   }, [fen, nextMove]);
 
+  const lastMove = useMemo(() => lastMoveFromSans(sanList, ply), [sanList, ply]);
+
   return (
     <div className="lesson-page">
       <header className="page-hero small">
@@ -113,7 +116,7 @@ export function Lesson() {
       <div className="lesson-grid-2col">
         <div className="board-col">
           <div className="board-with-eval">
-            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} customArrows={arrows} />
+            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} customArrows={arrows} lastMove={lastMove} />
             <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
           </div>
           <div className="board-controls">

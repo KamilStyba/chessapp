@@ -6,6 +6,7 @@ import { Board } from '../components/Board';
 import { MoveList } from '../components/MoveList';
 import { EvalBar } from '../components/EvalBar';
 import { getBestMove } from '../engine/stockfish';
+import { lastMoveFromSans } from '../engine/lastMove';
 
 export function PlayIndex() {
   return (
@@ -257,6 +258,7 @@ export function PlayRunner() {
               boardOrientation={userSide}
               arePiecesDraggable={userTurn && phase !== 'engine'}
               onPieceDrop={onPieceDrop}
+              lastMove={lastMoveFromSans(history, history.length)}
             />
             <EvalBar fen={fen} enabled={showEval} onToggle={() => setShowEval((v) => !v)} />
           </div>

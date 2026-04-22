@@ -1,0 +1,1 @@
+import{C as e}from"./Board-DJPn9FcT.js";function u(r,n){if(n<=0)return null;const o=new e;for(let t=0;t<Math.min(n-1,r.length);t++)try{o.move(r[t])}catch{return null}try{const t=o.move(r[n-1]);return t?{from:t.from,to:t.to}:null}catch{return null}}export{u as l};
