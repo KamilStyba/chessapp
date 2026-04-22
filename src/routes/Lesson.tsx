@@ -8,6 +8,7 @@ import { MoveList } from '../components/MoveList';
 import { VariationTree } from '../components/VariationTree';
 import { EvalBar, MultiPvPanel } from '../components/EvalBar';
 import { useKeyboardNavigation } from '../engine/useKeyboardNavigation';
+import { buildArrows } from '../engine/sanToArrow';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -84,6 +85,11 @@ export function Lesson() {
   const currentAnnotation = ply > 0 ? data.line[ply - 1] : null;
   const nextMove = ply < data.line.length ? data.line[ply] : null;
 
+  const arrows = useMemo(() => {
+    if (!nextMove) return [];
+    return buildArrows(fen, nextMove.san, nextMove.alternatives);
+  }, [fen, nextMove]);
+
   return (
     <div className="lesson-page">
       <header className="page-hero small">
@@ -107,7 +113,7 @@ export function Lesson() {
       <div className="lesson-grid-2col">
         <div className="board-col">
           <div className="board-with-eval">
-            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} />
+            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} customArrows={arrows} />
             <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
           </div>
           <div className="board-controls">

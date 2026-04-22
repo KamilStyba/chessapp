@@ -67,4 +67,11 @@ export const qgTarrasch: Lesson = {
       ],
     },
   ],
+  commonTraps: [
+    {
+      name: 'Premature ...c4',
+      line: ['d4', 'd5', 'c4', 'e6', 'Nc3', 'c5', 'cxd5', 'exd5', 'Nf3', 'Nc6', 'g3', 'Nf6', 'Bg2', 'Be7', 'O-O', 'O-O', 'Bg5', 'Be6', 'Rc1', 'c4', 'Ne5'],
+      comment: "10...c4?? is a classic Tarrasch blunder. By releasing the tension, Black gives up the d4 square. 11.Ne5! is the simple refutation: the knight dominates d4/d5, and after ...Nxe5 12.Bxc6 bxc6 13.Bxf6 Bxf6 14.Qd2 White has a crushing structural superiority.",
+    },
+  ],
 };

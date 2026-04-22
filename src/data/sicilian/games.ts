@@ -151,4 +151,23 @@ export const sicGames: MasterGame[] = [
       15: "Position typical of the Kalashnikov: White has the d5-pawn and queenside space; Black has the bishop pair, open c-file, and the outside passed a-pawn potential. Roughly balanced, strategic battle ahead.",
     },
   },
+  {
+    id: 'rossolimo-teaching-model',
+    opening: 'sicilian',
+    lessonId: 'anti-sicilians',
+    white: 'Model Game',
+    black: 'Model Game',
+    event: 'Rossolimo — Teaching Model',
+    year: 2024,
+    result: '1-0',
+    intro:
+      "Typical Rossolimo main line with ...g6 and ...dxc6. White plays a small-centre set-up (d3, Nbd2, Re1, e4 later) and aims for a long positional squeeze, exploiting Black's slightly worse pawn structure after the bishop trade.",
+    pgn: '1. e4 c5 2. Nf3 Nc6 3. Bb5 g6 4. Bxc6 dxc6 5. d3 Bg7 6. h3 Nf6 7. Nc3 Nd7 8. Be3 e5 9. Qd2 b6 10. O-O Bb7 11. Rfd1 O-O 12. Bh6 Bxh6 13. Qxh6 Re8 14. Nh2 Nf8 15. f4 exf4 16. Qxf4',
+    annotations: {
+      4: "4.Bxc6 dxc6 — the principled recapture: opens the d-file and does not double c-pawns.",
+      8: "8.Be3 — developing toward a Qd2 / Bh6 plan to trade dark-squared bishops.",
+      13: "13.Qxh6 — with the g7-bishop gone, Black's king is permanently drafty.",
+      16: "Classic Rossolimo squeeze: White has the better structure, the freer king position, and will manoeuvre slowly for the rest of the game.",
+    },
+  },
 ];
