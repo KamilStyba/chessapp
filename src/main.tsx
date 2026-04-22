@@ -9,26 +9,45 @@ import { Quiz } from './routes/Quiz';
 import { Explore } from './routes/Explore';
 import { MasterGameView } from './routes/MasterGame';
 import { PuzzlesIndex, PuzzleRunner } from './routes/Puzzles';
+import { Settings } from './routes/Settings';
+import { Drills } from './routes/Drills';
+import { PlayIndex, PlayRunner } from './routes/Play';
+import { PrefsProvider } from './prefs';
 import './styles.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <HashRouter>
-      <Routes>
-        <Route element={<App />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/opening/:openingId" element={<Opening />} />
-          <Route path="/lesson/:openingId/:lessonId" element={<Lesson />} />
-          <Route path="/lesson/:openingId/:lessonId/:variationId" element={<Lesson />} />
-          <Route path="/lesson/:openingId/:lessonId/:variationId/:subVariationId" element={<Lesson />} />
-          <Route path="/quiz/:openingId/:lessonId" element={<Quiz />} />
-          <Route path="/quiz/:openingId/:lessonId/:variationId" element={<Quiz />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/game/:gameId" element={<MasterGameView />} />
-          <Route path="/puzzles" element={<PuzzlesIndex />} />
-          <Route path="/puzzle/:puzzleId" element={<PuzzleRunner />} />
-        </Route>
-      </Routes>
-    </HashRouter>
+    <PrefsProvider>
+      <HashRouter>
+        <Routes>
+          <Route element={<App />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/opening/:openingId" element={<Opening />} />
+            <Route path="/lesson/:openingId/:lessonId" element={<Lesson />} />
+            <Route path="/lesson/:openingId/:lessonId/:variationId" element={<Lesson />} />
+            <Route path="/lesson/:openingId/:lessonId/:variationId/:subVariationId" element={<Lesson />} />
+            <Route path="/quiz/:openingId/:lessonId" element={<Quiz />} />
+            <Route path="/quiz/:openingId/:lessonId/:variationId" element={<Quiz />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/game/:gameId" element={<MasterGameView />} />
+            <Route path="/puzzles" element={<PuzzlesIndex />} />
+            <Route path="/puzzle/:puzzleId" element={<PuzzleRunner />} />
+            <Route path="/drills" element={<Drills />} />
+            <Route path="/play" element={<PlayIndex />} />
+            <Route path="/play/:openingId/:lessonId" element={<PlayRunner />} />
+            <Route path="/play/:openingId/:lessonId/:variationId" element={<PlayRunner />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+        </Routes>
+      </HashRouter>
+    </PrefsProvider>
   </React.StrictMode>,
 );
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {
+      // offline support not critical
+    });
+  });
+}

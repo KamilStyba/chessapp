@@ -55,8 +55,21 @@ export function Home() {
           <h3>🧩 Tactical Puzzles</h3>
           <p>
             Solve signature positions from each variation — Nd5 outposts,
-            Dragon exchange sacs, IQP breaks, minority attacks. Drag the key
-            move; read the grandmaster explanation.
+            Dragon exchange sacs, IQP breaks, minority attacks.
+          </p>
+        </Link>
+        <Link to="/drills" className="feature">
+          <h3>🎯 Drills</h3>
+          <p>
+            Shuffle-deck flashcards — see a position, play the book move. Session
+            streak &amp; accuracy tracked in your browser.
+          </p>
+        </Link>
+        <Link to="/play" className="feature">
+          <h3>⚔️ Play vs Stockfish</h3>
+          <p>
+            Pick a variation; play through the theory moves then continue the
+            game against Stockfish at your chosen strength.
           </p>
         </Link>
         <Link to="/explore" className="feature">

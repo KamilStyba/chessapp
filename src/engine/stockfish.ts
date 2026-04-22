@@ -129,3 +129,43 @@ export function stopEngine() {
   if (worker) send('stop');
   currentListener = null;
 }
+
+let bestMoveResolver: ((move: string) => void) | null = null;
+let bestMoveHooked = false;
+
+function hookBestMove() {
+  if (bestMoveHooked || !worker) return;
+  const prev = worker.onmessage;
+  worker.onmessage = (ev) => {
+    const data = String(ev.data);
+    if (data.startsWith('bestmove')) {
+      const tok = data.split(' ')[1];
+      if (bestMoveResolver && tok) {
+        const r = bestMoveResolver;
+        bestMoveResolver = null;
+        r(tok);
+      }
+    }
+    if (prev) (prev as any).call(worker, ev);
+  };
+  bestMoveHooked = true;
+}
+
+export async function getBestMove(
+  fen: string,
+  moveTimeMs: number,
+): Promise<string> {
+  await loadEngine(1);
+  hookBestMove();
+  currentListener = null;
+  currentDepth = 0;
+  currentLines = new Map();
+  currentBest = undefined;
+  sideToMove = fen.split(' ')[1] === 'w' ? 'w' : 'b';
+  return new Promise<string>((resolve) => {
+    bestMoveResolver = resolve;
+    send('stop');
+    send(`position fen ${fen}`);
+    send(`go movetime ${moveTimeMs}`);
+  });
+}

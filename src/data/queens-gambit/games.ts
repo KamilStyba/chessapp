@@ -94,4 +94,24 @@ export const qgGames: MasterGame[] = [
       17: '17.f4! — preparing f5 and a pawn storm; Black is in serious trouble because the king is still on e8.',
     },
   },
+  {
+    id: 'tarrasch-rubinstein-model',
+    opening: 'queens-gambit',
+    lessonId: 'tarrasch',
+    white: 'Model Game',
+    black: 'Model Game',
+    event: 'Tarrasch — Rubinstein System Model',
+    year: 2024,
+    result: '1/2-1/2',
+    intro:
+      "The Rubinstein System against the Tarrasch: White fianchettos with g3 and Bg2 to hammer the IQP on d5. Black must play actively with ...Nc6, ...Nf6, ...Be7 and find a middlegame plan — here ...Ne4 and ...c4 — before White's quiet pressure converts. A reference game for both sides' plans.",
+    pgn: '1. d4 d5 2. c4 e6 3. Nc3 c5 4. cxd5 exd5 5. Nf3 Nc6 6. g3 Nf6 7. Bg2 Be7 8. O-O O-O 9. Bg5 Be6 10. Rc1 Re8 11. dxc5 Bxc5 12. Nd4 Bd7 13. Nb3 Bb6 14. Bxf6 Qxf6 15. Nxd5 Qxb2 16. Nxb6 axb6 17. Qxd7',
+    annotations: {
+      4: "4.cxd5 exd5 — the main structural commitment, creating the IQP on d5.",
+      10: "10.Rc1 — standard Rubinstein: rook to the c-file before committing to an endgame trade.",
+      11: "11.dxc5 Bxc5 — White trades the d4-pawn to isolate Black's d5 permanently.",
+      15: "15.Nxd5! — a thematic central simplification. White gives up a pawn for an endgame with a clear structural plus.",
+      17: "17.Qxd7 — material is roughly balanced (minor piece for two pawns); the resulting endgame is drawish with precise defence.",
+    },
+  },
 ];
