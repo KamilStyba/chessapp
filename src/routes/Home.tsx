@@ -1,107 +1,171 @@
 import { Link } from 'react-router-dom';
-import { openings } from '../data/registry';
+import { useEffect, useState } from 'react';
+import { openings, puzzles } from '../data/registry';
+import { ProgressDonut } from '../components/ProgressDonut';
+import { LastStudied, mostRecent, mostRecentForOpening } from '../data/lastStudied';
+import { loadSolved } from '../data/puzzleProgress';
+
+const OPENING_TAGS: Record<string, string[]> = {
+  'queens-gambit': ['d4', 'closed', 'positional'],
+  sicilian: ['e4', 'open', 'sharp'],
+};
+
+function countVariations(op: typeof openings[number]): number {
+  return op.lessons.reduce(
+    (acc, l) =>
+      acc +
+      1 +
+      l.variations.length +
+      l.variations.reduce((a, v) => a + (v.subVariations?.length ?? 0), 0),
+    0,
+  );
+}
+
+function estimateProgress(openingId: string, solvedIds: Set<string>): number {
+  const op = openings.find((o) => o.id === openingId);
+  if (!op) return 0;
+  const openingPuzzles = puzzles.filter((p) => p.opening === openingId);
+  if (openingPuzzles.length === 0) return 0;
+  const done = openingPuzzles.filter((p) => solvedIds.has(p.id)).length;
+  return Math.round((done / openingPuzzles.length) * 100);
+}
 
 export function Home() {
+  const [recent, setRecent] = useState<LastStudied | null>(null);
+  const [solved, setSolved] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    setRecent(mostRecent());
+    setSolved(loadSolved());
+  }, []);
+
+  const resumeHref = recent
+    ? `/lesson/${recent.openingId}/${recent.lessonId}${recent.variationId ? `/${recent.variationId}` : ''}`
+    : '/opening/queens-gambit';
+
+  const heroTitle = recent
+    ? recent.variationName ?? recent.lessonTitle
+    : 'the Carlsbad minority attack';
+
+  const heroLede = recent
+    ? `You're in ${recent.lessonTitle}${recent.variationName ? ` → ${recent.variationName}` : ''}. Resume the annotated walkthrough, or quiz yourself on the line.`
+    : "Two openings, taught like a book. Start with either the Queen's Gambit or the Sicilian Defense — every major variation is annotated move-by-move at grandmaster level.";
+
   return (
     <div className="home">
-      <header className="hero">
-        <h1>Chess Openings Trainer</h1>
-        <p className="hero-sub">
-          A grandmaster-level walkthrough of the two deepest openings in chess —
-          the <strong>Queen&apos;s Gambit</strong> and the <strong>Sicilian Defense</strong>.
-          Move-by-move commentary, variation trees, quizzes, free exploration,
-          and annotated master games.
-        </p>
-      </header>
-
-      <section className="cards">
-        {openings.map((op) => (
-          <Link key={op.id} to={`/opening/${op.id}`} className="card">
-            <div className="card-icon" aria-hidden>
-              {op.id === 'queens-gambit' ? '♛' : '♚'}
-            </div>
-            <h2>{op.title}</h2>
-            <p className="card-sub">{op.subtitle}</p>
-            <ul className="card-stats">
-              <li>
-                <strong>{op.lessons.length}</strong> lessons
-              </li>
-              <li>
-                <strong>
-                  {op.lessons.reduce(
-                    (acc, l) =>
-                      acc +
-                      1 +
-                      l.variations.length +
-                      l.variations.reduce(
-                        (a, v) => a + (v.subVariations?.length ?? 0),
-                        0,
-                      ),
-                    0,
-                  )}
-                </strong>{' '}
-                variations
-              </li>
-              <li>
-                <strong>{op.games.length}</strong> master games
-              </li>
-            </ul>
+      <section className="editorial-hero">
+        <div className="kicker">
+          <span>Chapter</span><span className="dot">·</span><span>{recent ? 'Continue' : 'Start here'}</span>
+        </div>
+        <h1>
+          {recent ? 'Pick up where you left off — ' : 'Start reading — '}
+          <em>{heroTitle}.</em>
+        </h1>
+        <p className="hero-lede">{heroLede}</p>
+        <div className="hero-cta">
+          <Link className="btn-primary-dark" to={resumeHref}>
+            {recent ? 'Resume lesson →' : 'Begin →'}
           </Link>
-        ))}
+          {recent && (
+            <Link
+              className="btn-ghost"
+              to={`/quiz/${recent.openingId}/${recent.lessonId}${recent.variationId ? `/${recent.variationId}` : ''}`}
+            >
+              Quiz this line
+            </Link>
+          )}
+          <span className="hero-meta">
+            ~8 min · {openings.reduce((a, o) => a + o.lessons.length, 0)} lessons
+          </span>
+        </div>
       </section>
 
-      <section className="feature-row">
-        <Link to="/puzzles" className="feature">
-          <h3>🧩 Tactical Puzzles</h3>
-          <p>
-            Solve signature positions from each variation — Nd5 outposts,
-            Dragon exchange sacs, IQP breaks, minority attacks.
-          </p>
-        </Link>
-        <Link to="/drills" className="feature">
-          <h3>🎯 Drills</h3>
-          <p>
-            Shuffle-deck flashcards — see a position, play the book move. Session
-            streak &amp; accuracy tracked in your browser.
-          </p>
-        </Link>
-        <Link to="/play" className="feature">
-          <h3>⚔️ Play vs Stockfish</h3>
-          <p>
-            Pick a variation; play through the theory moves then continue the
-            game against Stockfish at your chosen strength.
-          </p>
-        </Link>
-        <Link to="/explore" className="feature">
-          <h3>🧭 Explore Mode</h3>
-          <p>
-            Play any moves on a board; the trainer identifies the opening and
-            variation you&apos;re in and links to the relevant lesson.
-          </p>
-        </Link>
+      <div className="section-title-row">
+        <h2>The two books</h2>
+        <span className="section-hint">Deep, annotated, grandmaster-level.</span>
+      </div>
+
+      <section className="books-grid">
+        {openings.map((op) => {
+          const pct = estimateProgress(op.id, solved);
+          const last = mostRecentForOpening(op.id);
+          const tags = OPENING_TAGS[op.id] ?? [];
+          return (
+            <Link key={op.id} to={`/opening/${op.id}`} className="book-card">
+              <div className="book-card-head">
+                <div className="book-icon" aria-hidden>
+                  {op.id === 'queens-gambit' ? '♛' : '♚'}
+                </div>
+                <ProgressDonut value={pct} size={46} />
+              </div>
+              <h3>{op.title}</h3>
+              <p className="book-lede">{op.subtitle}</p>
+              <div className="book-tags">
+                {tags.map((t) => (
+                  <span key={t} className="tag-pill">{t}</span>
+                ))}
+              </div>
+              <div className="book-stats">
+                <div className="stat">
+                  <div className="stat-num">{op.lessons.length}</div>
+                  <div className="stat-label">Lessons</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-num">{countVariations(op)}</div>
+                  <div className="stat-label">Variations</div>
+                </div>
+                <div className="stat">
+                  <div className="stat-num">{op.games.length}</div>
+                  <div className="stat-label">Master games</div>
+                </div>
+              </div>
+              {last && (
+                <div className="book-last-studied">
+                  <span className="label">Last studied</span>
+                  <span className="value">
+                    {last.lessonTitle}{last.variationName ? ` — ${last.variationName}` : ''}
+                  </span>
+                </div>
+              )}
+            </Link>
+          );
+        })}
       </section>
 
-      <section className="intro-blurb">
-        <h2>How to use this trainer</h2>
-        <ol>
-          <li>
-            <strong>Pick an opening</strong> and read the strategic overview
-            (themes, pawn structures, typical plans).
-          </li>
-          <li>
-            <strong>Walk through a lesson</strong> move by move. Each move
-            carries GM-level commentary: concrete ideas, piece coordination,
-            pawn levers, typical tactics.
-          </li>
-          <li>
-            <strong>Take the quiz</strong> for that lesson — the trainer plays
-            the opponent&apos;s moves; you must find the theory move.
-          </li>
-          <li>
-            <strong>Explore freely</strong> to test your recognition of
-            variations, or study <strong>annotated master games</strong>.
-          </li>
-        </ol>
+      <div className="section-title-row">
+        <h2>Practice</h2>
+        <span className="section-hint">Sharpen what you've read.</span>
+      </div>
+
+      <section className="practice-grid">
+        <Link to="/puzzles" className="practice-card">
+          <div className="practice-head">
+            <span className="practice-icon">🧩</span>
+            <h3>Tactical puzzles</h3>
+          </div>
+          <p>{puzzles.length} signature positions from every variation. Drag the key move, read the grandmaster explanation.</p>
+        </Link>
+        <Link to="/drills" className="practice-card">
+          <div className="practice-head">
+            <span className="practice-icon">🎯</span>
+            <h3>Drills</h3>
+          </div>
+          <p>Shuffle-deck flashcards across every theory line. Streak and accuracy tracked across sessions.</p>
+        </Link>
+        <Link to="/play" className="practice-card">
+          <div className="practice-head">
+            <span className="practice-icon">⚔️</span>
+            <h3>Play vs Stockfish</h3>
+          </div>
+          <p>Pick a variation, walk the theory, then continue the game against a Stockfish opponent at your level.</p>
+        </Link>
+        <Link to="/explore" className="practice-card">
+          <div className="practice-head">
+            <span className="practice-icon">🧭</span>
+            <h3>Explore</h3>
+          </div>
+          <p>Free board with live opening detection and book-move suggestions straight from your theory repertoire.</p>
+        </Link>
       </section>
     </div>
   );

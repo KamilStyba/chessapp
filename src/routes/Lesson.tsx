@@ -10,6 +10,8 @@ import { EvalBar, MultiPvPanel } from '../components/EvalBar';
 import { useKeyboardNavigation } from '../engine/useKeyboardNavigation';
 import { buildArrows } from '../engine/sanToArrow';
 import { lastMoveFromSans } from '../engine/lastMove';
+import { recordLastStudied } from '../data/lastStudied';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -62,6 +64,19 @@ export function Lesson() {
     setPly(0);
   }, [openingId, lessonId, variationId, subVariationId]);
 
+  useEffect(() => {
+    if (opening && lesson) {
+      recordLastStudied({
+        openingId: opening.id,
+        openingTitle: opening.title,
+        lessonId: lesson.id,
+        lessonTitle: lesson.title,
+        variationId,
+        variationName: data?.title,
+      });
+    }
+  }, [opening?.id, lesson?.id, variationId, data?.title]);
+
   const fen = useMemo(() => fenAtPly(sanList, ply), [sanList, ply]);
 
   if (!opening || !lesson || !data) {
@@ -95,14 +110,19 @@ export function Lesson() {
 
   return (
     <div className="lesson-page">
+      <Breadcrumbs
+        crumbs={[
+          { label: 'Library', to: '/' },
+          { label: opening.title, to: `/opening/${opening.id}` },
+          { label: lesson.title, to: `/lesson/${opening.id}/${lesson.id}` },
+          ...(variationId ? [{ label: data.title }] : []),
+        ]}
+      />
       <header className="page-hero small">
-        <Link to={`/opening/${opening.id}`} className="back-link">
-          ← {opening.title}
-        </Link>
         <h1>
           {lesson.title}
           {' — '}
-          <span className="variation-tag">{data.title}</span>
+          <em className="accent-italic">{data.title}</em>
         </h1>
         {data.eco && <div className="eco-tag">ECO {data.eco}</div>}
       </header>
