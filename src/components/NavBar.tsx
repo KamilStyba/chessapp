@@ -1,72 +1,77 @@
 import { Link, useLocation } from 'react-router-dom';
+import { CommandPalette, useCommandPalette } from './CommandPalette';
+import { useEffect, useState } from 'react';
 
-interface NavItem {
+const STREAK_KEY = 'chess-trainer-drills-session-v1';
+
+function loadStreak(): number {
+  try {
+    const raw = localStorage.getItem(STREAK_KEY);
+    if (!raw) return 0;
+    const parsed = JSON.parse(raw);
+    return parsed.streak ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+export function NavBar() {
+  const { open, setOpen } = useCommandPalette();
+  const [streak, setStreak] = useState(0);
+  const loc = useLocation();
+
+  useEffect(() => { setStreak(loadStreak()); }, [loc.pathname]);
+
+  const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.platform);
+
+  return (
+    <>
+      <header className="topbar">
+        <Link to="/" className="brand-block">
+          <span className="brand-mark-circle" aria-hidden>♞</span>
+          <span>Gambit</span>
+          <span className="brand-divider">|</span>
+          <span className="brand-sub">Openings Trainer</span>
+        </Link>
+        <button className="search-btn" onClick={() => setOpen(true)} aria-label="Open command palette">
+          <kbd>{isMac ? '⌘K' : 'Ctrl K'}</kbd>
+          <span style={{ marginLeft: '0.5rem' }}>Search lessons, variations, puzzles…</span>
+        </button>
+        <div className="topbar-right">
+          {streak > 0 && (
+            <span className="streak-pill" title={`Drill streak: ${streak}`}>
+              🔥 Streak · {streak}
+            </span>
+          )}
+          <Link to="/settings" className="avatar-chip" aria-label="Settings">⚙</Link>
+        </div>
+      </header>
+      <CommandPalette open={open} onClose={() => setOpen(false)} />
+    </>
+  );
+}
+
+interface BottomNavItem {
   to: string;
   label: string;
   icon: string;
   matches: string[];
 }
 
-const ITEMS: NavItem[] = [
-  { to: '/', label: 'Home', icon: '♞', matches: ['/'] },
-  { to: '/opening/queens-gambit', label: "QG", icon: '♛', matches: ['/opening/queens-gambit'] },
-  { to: '/opening/sicilian', label: 'Sicilian', icon: '♚', matches: ['/opening/sicilian'] },
-  { to: '/puzzles', label: 'Puzzles', icon: '🧩', matches: ['/puzzles', '/puzzle'] },
-  { to: '/drills', label: 'Drills', icon: '🎯', matches: ['/drills'] },
-  { to: '/play', label: 'Play', icon: '⚔️', matches: ['/play'] },
-  { to: '/explore', label: 'Explore', icon: '🧭', matches: ['/explore'] },
-];
-
-export function NavBar() {
-  const loc = useLocation();
-  const isActive = (item: NavItem) =>
-    item.to === '/'
-      ? loc.pathname === '/'
-      : item.matches.some((p) => loc.pathname === p || loc.pathname.startsWith(p + '/'));
-
-  return (
-    <nav className="navbar">
-      <Link to="/" className="brand">
-        <span className="brand-mark">♞</span>
-        <span className="brand-name">Openings Trainer</span>
-      </Link>
-      <div className="nav-links">
-        {ITEMS.slice(1).map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className={isActive(item) ? 'active' : ''}
-          >
-            {item.label}
-          </Link>
-        ))}
-        <Link
-          to="/settings"
-          className={loc.pathname === '/settings' ? 'active' : ''}
-          title="Settings"
-        >
-          ⚙
-        </Link>
-      </div>
-    </nav>
-  );
-}
-
 export function BottomTabs() {
   const loc = useLocation();
-  const isActive = (item: NavItem) =>
+  const tabs: BottomNavItem[] = [
+    { to: '/', label: 'Home', icon: '⌂', matches: ['/'] },
+    { to: '/puzzles', label: 'Puzzles', icon: '◆', matches: ['/puzzles', '/puzzle'] },
+    { to: '/drills', label: 'Drills', icon: '◇', matches: ['/drills'] },
+    { to: '/play', label: 'Play', icon: '♟', matches: ['/play'] },
+    { to: '/explore', label: 'Explore', icon: '⌕', matches: ['/explore'] },
+    { to: '/settings', label: 'Me', icon: '●', matches: ['/settings'] },
+  ];
+  const isActive = (item: BottomNavItem) =>
     item.to === '/'
       ? loc.pathname === '/'
       : item.matches.some((p) => loc.pathname === p || loc.pathname.startsWith(p + '/'));
-
-  const tabs = [
-    { to: '/', label: 'Home', icon: '⌂', matches: ['/'] },
-    { to: '/puzzles', label: 'Puzzles', icon: '🧩', matches: ['/puzzles', '/puzzle'] },
-    { to: '/drills', label: 'Drills', icon: '🎯', matches: ['/drills'] },
-    { to: '/play', label: 'Play', icon: '⚔️', matches: ['/play'] },
-    { to: '/explore', label: 'Explore', icon: '🧭', matches: ['/explore'] },
-    { to: '/settings', label: 'Settings', icon: '⚙', matches: ['/settings'] },
-  ];
 
   return (
     <nav className="bottom-tabs" aria-label="Primary">

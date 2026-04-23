@@ -3,9 +3,9 @@ import { BOARD_PALETTES, BoardStyle, Theme, usePrefs } from '../prefs';
 import { Board } from '../components/Board';
 
 const THEMES: { id: Theme; label: string; description: string }[] = [
-  { id: 'dark', label: 'Dark', description: 'Default. Easier on the eyes at night.' },
+  { id: 'sepia', label: 'Gambit (sepia)', description: 'Default. Warm editorial paper tone.' },
   { id: 'light', label: 'Light', description: 'High-contrast for bright rooms.' },
-  { id: 'sepia', label: 'Sepia', description: 'Warm paper tone for long reading.' },
+  { id: 'dark', label: 'Dark', description: 'For night study.' },
 ];
 
 const DEMO_FEN = 'r1bqkb1r/pp3ppp/2np1n2/4p3/4P3/2N2N2/PPP2PPP/R1BQKB1R w KQkq - 0 6';

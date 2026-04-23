@@ -6,6 +6,7 @@ import { Board } from '../components/Board';
 import { loadSolved, markSolved, clearSolved } from '../data/puzzleProgress';
 import { sanToSquares } from '../engine/sanToArrow';
 import { lastMoveFromSans } from '../engine/lastMove';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 export function PuzzlesIndex() {
   const navigate = useNavigate();
@@ -42,6 +43,12 @@ export function PuzzlesIndex() {
 
   return (
     <div className="puzzles-index">
+      <Breadcrumbs
+        crumbs={[
+          { label: 'Library', to: '/' },
+          { label: 'Tactical puzzles' },
+        ]}
+      />
       <header className="page-hero">
         <h1>Tactical puzzles</h1>
         <p className="hero-sub">
@@ -226,10 +233,14 @@ export function PuzzleRunner() {
 
   return (
     <div className="puzzle-page">
+      <Breadcrumbs
+        crumbs={[
+          { label: 'Library', to: '/' },
+          { label: 'Tactical puzzles', to: '/puzzles' },
+          { label: puzzle.title },
+        ]}
+      />
       <header className="page-hero small">
-        <Link to="/puzzles" className="back-link">
-          ← All puzzles
-        </Link>
         <h1>
           {puzzle.title}{' '}
           <span className="variation-tag">

@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 
-export type Theme = 'dark' | 'light' | 'sepia';
-export type BoardStyle = 'classic' | 'blue' | 'green' | 'rose' | 'mono';
+export type Theme = 'sepia' | 'light' | 'dark';
+export type BoardStyle = 'wood' | 'classic' | 'blue' | 'green' | 'rose' | 'mono';
 
 export interface Prefs {
   theme: Theme;
@@ -11,8 +11,8 @@ export interface Prefs {
 }
 
 const DEFAULTS: Prefs = {
-  theme: 'dark',
-  boardStyle: 'classic',
+  theme: 'sepia',
+  boardStyle: 'wood',
   showArrows: true,
   sound: true,
 };
@@ -70,6 +70,7 @@ export function usePrefs() {
 }
 
 export const BOARD_PALETTES: Record<BoardStyle, { light: string; dark: string; label: string }> = {
+  wood: { light: '#e9d7b0', dark: '#8e6a3d', label: 'Wood (Gambit)' },
   classic: { light: '#eef1f6', dark: '#6b7a99', label: 'Classic' },
   blue: { light: '#dee3ee', dark: '#5d7fb4', label: 'Blue' },
   green: { light: '#eeeed2', dark: '#769656', label: 'Green (lichess)' },

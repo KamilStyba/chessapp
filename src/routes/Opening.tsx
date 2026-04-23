@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { findOpening } from '../data/registry';
+import { Breadcrumbs } from '../components/Breadcrumbs';
 
 export function Opening() {
   const { openingId } = useParams();
@@ -8,10 +9,13 @@ export function Opening() {
 
   return (
     <div className="opening-page">
+      <Breadcrumbs
+        crumbs={[
+          { label: 'Library', to: '/' },
+          { label: op.title },
+        ]}
+      />
       <header className="page-hero">
-        <Link to="/" className="back-link">
-          ← Back
-        </Link>
         <h1>{op.title}</h1>
         <p className="hero-sub">{op.subtitle}</p>
       </header>
