@@ -24,8 +24,14 @@ export function MoveList({ moves, currentPly, onJump }: Props) {
     const el = containerRef.current;
     if (!el) return;
     const active = el.querySelector<HTMLButtonElement>('.move.active');
-    if (active) {
-      active.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    if (!active) return;
+    const elRect = el.getBoundingClientRect();
+    const activeRect = active.getBoundingClientRect();
+    // Scroll the movelist container only — never scroll the whole page
+    if (activeRect.top < elRect.top) {
+      el.scrollTop += activeRect.top - elRect.top - 8;
+    } else if (activeRect.bottom > elRect.bottom) {
+      el.scrollTop += activeRect.bottom - elRect.bottom + 8;
     }
   }, [currentPly]);
 

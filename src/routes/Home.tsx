@@ -4,6 +4,19 @@ import { openings, puzzles } from '../data/registry';
 import { ProgressDonut } from '../components/ProgressDonut';
 import { LastStudied, mostRecent, mostRecentForOpening } from '../data/lastStudied';
 import { loadSolved } from '../data/puzzleProgress';
+import { ALL_ACHIEVEMENTS, getUnlocked } from '../data/achievements';
+
+function dailyPuzzleIndex(): number {
+  const today = new Date();
+  const key = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+  let h = 2166136261;
+  const s = String(key);
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = (h * 16777619) >>> 0;
+  }
+  return h % puzzles.length;
+}
 
 const OPENING_TAGS: Record<string, string[]> = {
   'queens-gambit': ['d4', 'closed', 'positional'],
@@ -33,11 +46,15 @@ function estimateProgress(openingId: string, solvedIds: Set<string>): number {
 export function Home() {
   const [recent, setRecent] = useState<LastStudied | null>(null);
   const [solved, setSolved] = useState<Set<string>>(new Set());
+  const [unlocked, setUnlocked] = useState<Record<string, number>>({});
 
   useEffect(() => {
     setRecent(mostRecent());
     setSolved(loadSolved());
+    setUnlocked(getUnlocked());
   }, []);
+
+  const dailyPuzzle = puzzles[dailyPuzzleIndex()];
 
   const resumeHref = recent
     ? `/lesson/${recent.openingId}/${recent.lessonId}${recent.variationId ? `/${recent.variationId}` : ''}`
@@ -130,6 +147,31 @@ export function Home() {
             </Link>
           );
         })}
+      </section>
+
+      <section className="daily-row">
+        <Link to={`/puzzle/${dailyPuzzle.id}`} className="daily-card">
+          <span className="kicker"><span>Puzzle of the day</span><span className="dot">·</span><span>{new Date().toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span></span>
+          <h3>{dailyPuzzle.title}</h3>
+          <p>{dailyPuzzle.description}</p>
+          <button className="daily-cta">Solve it →</button>
+        </Link>
+        <div className="achievements-card">
+          <h3>Achievements</h3>
+          <p>{Object.keys(unlocked).length} of {ALL_ACHIEVEMENTS.length} unlocked — keep going.</p>
+          <div className="badges-row">
+            {ALL_ACHIEVEMENTS.map((a) => (
+              <span
+                key={a.id}
+                className={`badge ${unlocked[a.id] ? 'unlocked' : 'locked'}`}
+                title={a.description}
+              >
+                <span className="badge-icon">{a.icon}</span>
+                {a.title}
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
 
       <div className="section-title-row">

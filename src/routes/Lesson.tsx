@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { Chess } from 'chess.js';
 import { findLesson, findOpening } from '../data/registry';
 import { AnnotatedMove, Variation } from '../data/types';
@@ -12,6 +12,8 @@ import { buildArrows } from '../engine/sanToArrow';
 import { lastMoveFromSans } from '../engine/lastMove';
 import { recordLastStudied } from '../data/lastStudied';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { getBestMove } from '../engine/stockfish';
+import { recordAchievement } from '../data/achievements';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -37,16 +39,18 @@ function resolveLine(
   return { title: sv.name, summary: sv.summary, line: sv.line, eco: sv.eco };
 }
 
-function fenAtPly(sanList: string[], ply: number): string {
-  const chess = new Chess();
-  for (let i = 0; i < ply && i < sanList.length; i++) {
+function replay(sans: string[]): { fen: string; last?: { from: string; to: string } } {
+  const c = new Chess();
+  let last: { from: string; to: string } | undefined;
+  for (const s of sans) {
     try {
-      chess.move(sanList[i]);
+      const m = c.move(s);
+      if (m) last = { from: m.from, to: m.to };
     } catch {
       break;
     }
   }
-  return chess.fen();
+  return { fen: c.fen(), last };
 }
 
 export function Lesson() {
@@ -57,11 +61,22 @@ export function Lesson() {
 
   const sanList = useMemo(() => data?.line.map((m) => m.san) ?? [], [data]);
   const [ply, setPly] = useState(0);
+  const [forkMoves, setForkMoves] = useState<string[]>([]);
   const [engineOn, setEngineOn] = useState(false);
+  const [engineThinking, setEngineThinking] = useState(false);
   const [orientation, setOrientation] = useState<'white' | 'black'>('white');
+  const [celebratePly, setCelebratePly] = useState<number | null>(null);
+  const [interactive, setInteractive] = useState(true);
+  const mounted = useRef(true);
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => { mounted.current = false; };
+  }, []);
 
   useEffect(() => {
     setPly(0);
+    setForkMoves([]);
   }, [openingId, lessonId, variationId, subVariationId]);
 
   useEffect(() => {
@@ -77,7 +92,14 @@ export function Lesson() {
     }
   }, [opening?.id, lesson?.id, variationId, data?.title]);
 
-  const fen = useMemo(() => fenAtPly(sanList, ply), [sanList, ply]);
+  const offBook = forkMoves.length > 0;
+  const allSans = useMemo(
+    () => (offBook ? [...sanList.slice(0, ply), ...forkMoves] : sanList.slice(0, ply)),
+    [sanList, ply, forkMoves, offBook],
+  );
+  const replayed = useMemo(() => replay(allSans), [allSans]);
+  const fen = replayed.fen;
+  const lastMove = replayed.last ?? null;
 
   if (!opening || !lesson || !data) {
     return (
@@ -87,26 +109,79 @@ export function Lesson() {
     );
   }
 
-  const goto = (p: number) =>
+  const goto = (p: number) => {
+    setForkMoves([]);
     setPly(Math.max(0, Math.min(p, sanList.length)));
+  };
 
   useKeyboardNavigation({
-    onPrev: () => setPly((p) => Math.max(0, p - 1)),
-    onNext: () => setPly((p) => Math.min(sanList.length, p + 1)),
-    onHome: () => setPly(0),
-    onEnd: () => setPly(sanList.length),
+    onPrev: () => {
+      if (offBook) setForkMoves((f) => f.slice(0, -1));
+      else setPly((p) => Math.max(0, p - 1));
+    },
+    onNext: () => !offBook && setPly((p) => Math.min(sanList.length, p + 1)),
+    onHome: () => { setForkMoves([]); setPly(0); },
+    onEnd: () => { setForkMoves([]); setPly(sanList.length); },
     onFlip: () => setOrientation((o) => (o === 'white' ? 'black' : 'white')),
   });
 
-  const currentAnnotation = ply > 0 ? data.line[ply - 1] : null;
-  const nextMove = ply < data.line.length ? data.line[ply] : null;
+  const currentAnnotation = !offBook && ply > 0 ? data.line[ply - 1] : null;
+  const nextMove = !offBook && ply < data.line.length ? data.line[ply] : null;
 
   const arrows = useMemo(() => {
     if (!nextMove) return [];
     return buildArrows(fen, nextMove.san, nextMove.alternatives);
   }, [fen, nextMove]);
 
-  const lastMove = useMemo(() => lastMoveFromSans(sanList, ply), [sanList, ply]);
+  const onPieceDrop = (from: string, to: string): boolean => {
+    if (!interactive) return false;
+    const c = new Chess(fen);
+    let m;
+    try {
+      m = c.move({ from, to, promotion: 'q' });
+    } catch {
+      return false;
+    }
+    if (!m) return false;
+
+    if (!offBook && ply < sanList.length && m.san === sanList[ply]) {
+      const next = ply + 1;
+      setPly(next);
+      setCelebratePly(next);
+      setTimeout(() => mounted.current && setCelebratePly(null), 900);
+      if (next === sanList.length) {
+        recordAchievement('finish-lesson', { lessonId: lesson.id, title: lesson.title });
+      }
+      return true;
+    }
+    setForkMoves((f) => [...f, m.san]);
+    return true;
+  };
+
+  const returnToTheory = () => {
+    setForkMoves([]);
+  };
+
+  const playEngineMove = async () => {
+    setEngineThinking(true);
+    try {
+      const uci = await getBestMove(fen, 1200);
+      if (!mounted.current) return;
+      const c = new Chess(fen);
+      const from = uci.slice(0, 2);
+      const to = uci.slice(2, 4);
+      const promotion = uci.length > 4 ? uci[4] : undefined;
+      const m = c.move({ from, to, promotion });
+      if (m) setForkMoves((f) => [...f, m.san]);
+    } catch {
+      // ignore
+    } finally {
+      if (mounted.current) setEngineThinking(false);
+    }
+  };
+
+  const historySans = allSans;
+  const currentPly = historySans.length;
 
   return (
     <div className="lesson-page">
@@ -120,14 +195,13 @@ export function Lesson() {
       />
       <header className="page-hero small">
         <h1>
-          {lesson.title}
-          {' — '}
+          {lesson.title}{' — '}
           <em className="accent-italic">{data.title}</em>
         </h1>
         {data.eco && <div className="eco-tag">ECO {data.eco}</div>}
       </header>
 
-      {!variationId && (
+      {!variationId && !offBook && ply === 0 && (
         <section className="intro-essay">
           <p>{lesson.intro}</p>
         </section>
@@ -136,56 +210,120 @@ export function Lesson() {
       <div className="lesson-grid-2col">
         <div className="board-col">
           <div className="board-with-eval">
-            <Board fen={fen} arePiecesDraggable={false} boardOrientation={orientation} customArrows={arrows} lastMove={lastMove} />
+            <Board
+              fen={fen}
+              arePiecesDraggable={interactive}
+              onPieceDrop={interactive ? onPieceDrop : undefined}
+              boardOrientation={orientation}
+              customArrows={arrows}
+              lastMove={lastMove}
+            />
             <EvalBar fen={fen} enabled={engineOn} onToggle={() => setEngineOn((v) => !v)} />
+            {celebratePly !== null && <div className="celebrate-pop" aria-hidden>✓</div>}
           </div>
           <div className="board-controls">
-            <button onClick={() => goto(0)} aria-label="Reset" title="Home">⏮</button>
-            <button onClick={() => goto(ply - 1)} aria-label="Back" title="← / k">◀</button>
-            <button onClick={() => goto(ply + 1)} aria-label="Next" className="primary" title="→ / j / space">▶</button>
-            <button onClick={() => goto(sanList.length)} aria-label="End" title="End">⏭</button>
+            <button onClick={() => { setForkMoves([]); setPly(0); }} aria-label="Reset" title="Home">⏮</button>
+            <button
+              onClick={() => {
+                if (offBook) setForkMoves((f) => f.slice(0, -1));
+                else setPly((p) => Math.max(0, p - 1));
+              }}
+              aria-label="Back"
+              title="← / k"
+            >◀</button>
+            <button
+              onClick={() => setPly((p) => Math.min(sanList.length, p + 1))}
+              aria-label="Next"
+              className="primary"
+              title="→ / j / space"
+              disabled={offBook}
+            >▶</button>
+            <button onClick={() => { setForkMoves([]); setPly(sanList.length); }} aria-label="End" title="End">⏭</button>
             <button onClick={() => setOrientation((o) => o === 'white' ? 'black' : 'white')} aria-label="Flip" title="f">⇅</button>
+            <button
+              className={interactive ? 'active' : ''}
+              onClick={() => setInteractive((v) => !v)}
+              title="Toggle: drag pieces to try moves"
+            >
+              {interactive ? '🎮 Interactive' : '🔒 Locked'}
+            </button>
           </div>
-          <MoveList moves={sanList} currentPly={ply} onJump={goto} />
+          <MoveList moves={historySans} currentPly={currentPly} onJump={goto} />
         </div>
 
         <div className="info-col">
           <MultiPvPanel fen={fen} enabled={engineOn} />
-          <section className="annotation-panel">
-            <h2>
-              {currentAnnotation
-                ? `Move ${Math.ceil(ply / 2)}${ply % 2 === 1 ? '.' : '...'} ${currentAnnotation.san}`
-                : 'Starting position'}
-            </h2>
-            {!currentAnnotation && <p className="summary">{data.summary}</p>}
-            {currentAnnotation && (
-              <>
-                <p>{currentAnnotation.comment || '—'}</p>
-                {currentAnnotation.keyIdea && (
-                  <div className="key-idea">🔑 {currentAnnotation.keyIdea}</div>
-                )}
-                {currentAnnotation.alternatives && currentAnnotation.alternatives.length > 0 && (
-                  <div className="alternatives">
-                    <h4>Alternatives</h4>
-                    <ul>
-                      {currentAnnotation.alternatives.map((a, i) => (
-                        <li key={i}>
-                          <code>{a.san}</code> — {a.why}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </>
-            )}
-            {nextMove && (
-              <div className="next-hint">
-                Next: <code>{nextMove.san}</code>
-              </div>
-            )}
-          </section>
 
-          {!variationId && (
+          {offBook ? (
+            <section className="annotation-panel off-book">
+              <div className="off-book-badge">⚠ Off-book</div>
+              <h2>You've left the theory line</h2>
+              <p>
+                You're <strong>{forkMoves.length}</strong> {forkMoves.length === 1 ? 'move' : 'moves'} into your own exploration from this position.
+                The annotated theory resumes the moment you come back.
+              </p>
+              <div className="action-row" style={{ flexWrap: 'wrap' }}>
+                <button className="btn primary" onClick={returnToTheory}>↩ Return to theory</button>
+                <button className="btn" onClick={playEngineMove} disabled={engineThinking}>
+                  {engineThinking ? 'Engine thinking…' : '🤖 Let engine reply'}
+                </button>
+                <Link
+                  className="btn"
+                  to="/explore"
+                  state={{ prefillFen: fen }}
+                >
+                  Open in Explore →
+                </Link>
+              </div>
+              <p className="muted" style={{ fontSize: '0.85rem', marginTop: '0.6rem' }}>
+                Tip: "Let engine reply" plays Stockfish's best response so you can see where your idea leads.
+              </p>
+            </section>
+          ) : (
+            <section className="annotation-panel">
+              <h2>
+                {currentAnnotation
+                  ? `${Math.ceil(ply / 2)}${ply % 2 === 1 ? '.' : '…'} ${currentAnnotation.san}`
+                  : 'Starting position'}
+              </h2>
+              {!currentAnnotation && <p className="summary">{data.summary}</p>}
+              {currentAnnotation && (
+                <>
+                  <p>{currentAnnotation.comment || '—'}</p>
+                  {currentAnnotation.keyIdea && (
+                    <div className="key-idea">🔑 {currentAnnotation.keyIdea}</div>
+                  )}
+                  {currentAnnotation.alternatives && currentAnnotation.alternatives.length > 0 && (
+                    <div className="alternatives">
+                      <h4>Alternatives</h4>
+                      <ul>
+                        {currentAnnotation.alternatives.map((a, i) => (
+                          <li key={i}>
+                            <code>{a.san}</code> — {a.why}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )}
+              {nextMove && (
+                <div className="next-hint">
+                  {interactive
+                    ? <>Try to play the theory move — drag any piece. Hint: <code>{nextMove.san}</code></>
+                    : <>Next: <code>{nextMove.san}</code></>}
+                </div>
+              )}
+              {!nextMove && ply > 0 && ply === sanList.length && (
+                <div className="lesson-complete">
+                  <strong>🏁 Main line complete.</strong>
+                  <span className="muted"> Try the quiz, study a variation, or play it out vs Stockfish.</span>
+                </div>
+              )}
+            </section>
+          )}
+
+          {!variationId && !offBook && (
             <>
               <section className="themes">
                 <h3>Strategic themes</h3>
@@ -253,6 +391,16 @@ export function Lesson() {
               }
             >
               Take the quiz →
+            </Link>
+            <Link
+              className="btn"
+              to={
+                variationId
+                  ? `/play/${opening.id}/${lesson.id}/${variationId}`
+                  : `/play/${opening.id}/${lesson.id}`
+              }
+            >
+              Play this vs Stockfish →
             </Link>
           </div>
         </div>

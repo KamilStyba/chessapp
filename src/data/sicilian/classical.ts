@@ -56,6 +56,12 @@ export const sicClassical: Lesson = {
       { san: 'Ne5', comment: 'Modern centralisation.' },
       { san: 'Kb1', comment: 'Prophylactic king move.' },
       { san: 'Rc8', comment: 'Preparing ...b5 and ...Nc4.' },
+      { san: 'g4', comment: 'Kingside storm begins — the race is on.', keyIdea: 'Opposite-side castling = pawn storm race.' },
+      { san: 'b5', comment: 'Counter-storm on the queenside — Black must be faster.' },
+      { san: 'h4', comment: '' },
+      { san: 'Nc4', comment: '14...Nc4! — the knight jumps into the attacking position, eyeing Be3 and opening the c-file for the rook.', keyIdea: 'The c4 outpost disrupts White\'s coordination.' },
+      { san: 'Bxc4', comment: 'White must trade or suffer; Be3 was hanging.' },
+      { san: 'Rxc4', comment: "Now the rook sits actively on c4, pressuring e4 and ready to swing to a4 or b4. The middlegame is balanced — both sides have concrete attacking chances." },
     ],
   },
   variations: [
