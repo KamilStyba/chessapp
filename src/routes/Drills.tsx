@@ -5,6 +5,7 @@ import { openings } from '../data/registry';
 import { Board } from '../components/Board';
 import { AnnotatedMove } from '../data/types';
 import { lastMoveFromSans } from '../engine/lastMove';
+import { recordAchievement } from '../data/achievements';
 
 interface DrillCard {
   openingId: string;
@@ -130,6 +131,7 @@ export function Drills() {
           best: Math.max(s.best, s.streak + 1),
         };
         saveStats(next);
+        recordAchievement('streak', { streak: next.streak });
         return next;
       });
       return true;

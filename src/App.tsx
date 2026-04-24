@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { NavBar, BottomTabs } from './components/NavBar';
+import { AchievementToastHost } from './components/AchievementToast';
 
 export default function App() {
   return (
@@ -10,10 +11,11 @@ export default function App() {
       </main>
       <footer className="footer">
         <small>
-          Chess Openings Trainer — Queen&apos;s Gambit &amp; Sicilian Defense. GM-level commentary for thorough study.
+          Gambit — Queen&apos;s Gambit &amp; Sicilian Defense, annotated at grandmaster level.
         </small>
       </footer>
       <BottomTabs />
+      <AchievementToastHost />
     </div>
   );
 }

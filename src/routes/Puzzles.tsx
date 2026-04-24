@@ -4,6 +4,7 @@ import { Chess } from 'chess.js';
 import { findPuzzle, puzzles, findOpening } from '../data/registry';
 import { Board } from '../components/Board';
 import { loadSolved, markSolved, clearSolved } from '../data/puzzleProgress';
+import { recordAchievement } from '../data/achievements';
 import { sanToSquares } from '../engine/sanToArrow';
 import { lastMoveFromSans } from '../engine/lastMove';
 import { Breadcrumbs } from '../components/Breadcrumbs';
@@ -183,7 +184,14 @@ export function PuzzleRunner() {
       if (nextIndex >= puzzle.solution.length) {
         setSolutionIndex(nextIndex);
         setStatus('solved');
-        if (hintLevel === 0) markSolved(puzzle.id);
+        if (hintLevel === 0) {
+          markSolved(puzzle.id);
+          const solved = loadSolved();
+          recordAchievement('solve-puzzle', {
+            totalSolved: solved.size,
+            totalPuzzles: puzzles.length,
+          });
+        }
       } else {
         setSolutionIndex(nextIndex);
         setStatus('opponent');
