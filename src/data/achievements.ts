@@ -111,3 +111,39 @@ export function getUnlocked(): Record<string, number> {
 export function countFinishedLessons(): number {
   return Object.keys(load().finishedLessons).length;
 }
+
+const XP_KEY = 'chess-trainer-xp-v1';
+
+export interface XpState {
+  xp: number;
+  level: number;
+}
+
+function xpFor(level: number): number {
+  return Math.round(50 * Math.pow(1.5, level - 1));
+}
+
+export function xpState(): XpState {
+  try {
+    const raw = localStorage.getItem(XP_KEY);
+    if (!raw) return { xp: 0, level: 1 };
+    return JSON.parse(raw);
+  } catch {
+    return { xp: 0, level: 1 };
+  }
+}
+
+export function xpForNextLevel(level: number): number {
+  return xpFor(level);
+}
+
+export function addXp(amount: number): XpState {
+  let s = xpState();
+  s.xp += amount;
+  while (s.xp >= xpFor(s.level)) {
+    s.xp -= xpFor(s.level);
+    s.level += 1;
+  }
+  try { localStorage.setItem(XP_KEY, JSON.stringify(s)); } catch {}
+  return s;
+}

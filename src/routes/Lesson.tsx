@@ -13,7 +13,7 @@ import { lastMoveFromSans } from '../engine/lastMove';
 import { recordLastStudied } from '../data/lastStudied';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { getBestMove } from '../engine/stockfish';
-import { recordAchievement } from '../data/achievements';
+import { recordAchievement, addXp } from '../data/achievements';
 
 function resolveLine(
   lesson: ReturnType<typeof findLesson>,
@@ -67,6 +67,9 @@ export function Lesson() {
   const [orientation, setOrientation] = useState<'white' | 'black'>('white');
   const [celebratePly, setCelebratePly] = useState<number | null>(null);
   const [interactive, setInteractive] = useState(true);
+  const [autoplay, setAutoplay] = useState(false);
+  const [showComplete, setShowComplete] = useState(false);
+  const [xpGain, setXpGain] = useState<number | null>(null);
   const mounted = useRef(true);
 
   useEffect(() => {
@@ -77,7 +80,25 @@ export function Lesson() {
   useEffect(() => {
     setPly(0);
     setForkMoves([]);
+    setShowComplete(false);
   }, [openingId, lessonId, variationId, subVariationId]);
+
+  useEffect(() => {
+    if (!autoplay) return;
+    if (ply >= sanList.length) {
+      setAutoplay(false);
+      return;
+    }
+    const t = setTimeout(() => {
+      if (!mounted.current) return;
+      setPly((p) => {
+        const next = Math.min(sanList.length, p + 1);
+        if (next === sanList.length) setShowComplete(true);
+        return next;
+      });
+    }, 1400);
+    return () => clearTimeout(t);
+  }, [autoplay, ply, sanList.length]);
 
   useEffect(() => {
     if (opening && lesson) {
@@ -148,12 +169,18 @@ export function Lesson() {
       const next = ply + 1;
       setPly(next);
       setCelebratePly(next);
+      addXp(5);
+      setXpGain(5);
+      setTimeout(() => mounted.current && setXpGain(null), 1000);
       setTimeout(() => mounted.current && setCelebratePly(null), 900);
       if (next === sanList.length) {
         recordAchievement('finish-lesson', { lessonId: lesson.id, title: lesson.title });
+        addXp(50);
+        setShowComplete(true);
       }
       return true;
     }
+    recordAchievement('off-book');
     setForkMoves((f) => [...f, m.san]);
     return true;
   };
@@ -247,7 +274,16 @@ export function Lesson() {
             >
               {interactive ? '🎮 Interactive' : '🔒 Locked'}
             </button>
+            <button
+              className={autoplay ? 'active' : ''}
+              onClick={() => setAutoplay((v) => !v)}
+              title="Study mode — auto-play the whole line"
+              disabled={offBook || ply >= sanList.length}
+            >
+              {autoplay ? '⏸ Studying…' : '▶ Study'}
+            </button>
           </div>
+          {xpGain !== null && <div className="xp-float">+{xpGain} XP</div>}
           <MoveList moves={historySans} currentPly={currentPly} onJump={goto} />
         </div>
 
@@ -405,6 +441,38 @@ export function Lesson() {
           </div>
         </div>
       </div>
+
+      {showComplete && (
+        <div className="complete-overlay" onClick={() => setShowComplete(false)}>
+          <div className="complete-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="confetti" aria-hidden>
+              {Array.from({ length: 30 }).map((_, i) => (
+                <span key={i} className="confetti-piece" style={{ ['--i' as any]: i }} />
+              ))}
+            </div>
+            <div className="kicker"><span>Line complete</span></div>
+            <h2 className="complete-title">{data.title}</h2>
+            <p className="complete-lede">
+              You walked the full {sanList.length}-move line. +50 XP banked.
+            </p>
+            <div className="action-row" style={{ justifyContent: 'center' }}>
+              <button className="btn-primary-dark" onClick={() => { setShowComplete(false); setPly(0); }}>
+                Replay
+              </button>
+              <Link
+                className="btn"
+                to={variationId ? `/quiz/${opening.id}/${lesson.id}/${variationId}` : `/quiz/${opening.id}/${lesson.id}`}
+                onClick={() => setShowComplete(false)}
+              >
+                Quiz this line →
+              </Link>
+              <Link className="btn" to="/" onClick={() => setShowComplete(false)}>
+                Home
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

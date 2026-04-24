@@ -4,7 +4,7 @@ import { openings, puzzles } from '../data/registry';
 import { ProgressDonut } from '../components/ProgressDonut';
 import { LastStudied, mostRecent, mostRecentForOpening } from '../data/lastStudied';
 import { loadSolved } from '../data/puzzleProgress';
-import { ALL_ACHIEVEMENTS, getUnlocked } from '../data/achievements';
+import { ALL_ACHIEVEMENTS, getUnlocked, xpState, xpForNextLevel } from '../data/achievements';
 
 function dailyPuzzleIndex(): number {
   const today = new Date();
@@ -47,12 +47,16 @@ export function Home() {
   const [recent, setRecent] = useState<LastStudied | null>(null);
   const [solved, setSolved] = useState<Set<string>>(new Set());
   const [unlocked, setUnlocked] = useState<Record<string, number>>({});
+  const [xp, setXp] = useState({ xp: 0, level: 1 });
 
   useEffect(() => {
     setRecent(mostRecent());
     setSolved(loadSolved());
     setUnlocked(getUnlocked());
+    setXp(xpState());
   }, []);
+  const xpNext = xpForNextLevel(xp.level);
+  const xpPct = xpNext > 0 ? Math.round((xp.xp / xpNext) * 100) : 0;
 
   const dailyPuzzle = puzzles[dailyPuzzleIndex()];
 
@@ -148,6 +152,14 @@ export function Home() {
           );
         })}
       </section>
+
+      <div className="xp-row">
+        <span className="xp-level">Lvl {xp.level}</span>
+        <div className="xp-rail" aria-hidden>
+          <div className="xp-fill" style={{ width: `${xpPct}%` }} />
+        </div>
+        <span className="xp-label">{xp.xp} / {xpNext} XP</span>
+      </div>
 
       <section className="daily-row">
         <Link to={`/puzzle/${dailyPuzzle.id}`} className="daily-card">
