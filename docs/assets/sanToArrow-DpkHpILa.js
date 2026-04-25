@@ -1,1 +1,0 @@
-import{C as c}from"./Board-BofOdXqz.js";function u(r,t){const n=new c(r);try{const s=n.move(t);return s?[s.from,s.to]:null}catch{return null}}function i(r,t,n){const s=[];if(t){const o=u(r,t);o&&s.push([o[0],o[1],"#f2b33d"])}if(n)for(const o of n){const f=u(r,o.san);f&&s.push([f[0],f[1],"#7aa9ff"])}return s}export{i as b,u as s};

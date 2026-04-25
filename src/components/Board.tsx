@@ -18,14 +18,21 @@ function computeWidth(): number {
   if (typeof window === 'undefined') return 360;
   const w = window.innerWidth;
   const h = window.innerHeight;
-  if (w < 900) {
-    // Mobile: fill width minus small gutter, but never taller than 72vh
-    const maxH = Math.max(280, Math.min(h * 0.7, 600));
-    return Math.min(w - 16, maxH, 560);
+  // Reserve vertical space: topbar ~60, controls/movelist ~150, bottom-tabs ~64, eval bar ~40, padding
+  const verticalChrome = w < 760 ? 280 : 200;
+  const maxH = Math.max(220, h - verticalChrome);
+
+  if (w < 760) {
+    // Mobile: fill width minus 12px gutters
+    return Math.max(220, Math.min(w - 24, maxH, 560));
   }
-  // Desktop: fit in the left column
-  const sideWidth = Math.min(w * 0.55, 640);
-  return Math.max(320, Math.min(sideWidth - 32, 560));
+  if (w < 1020) {
+    // Tablet: stacked, but board centered with comfortable size
+    return Math.max(320, Math.min(w - 56, maxH, 560));
+  }
+  // Desktop: fit in the left column with eval bar
+  const colWidth = Math.min(w * 0.5, 600);
+  return Math.max(360, Math.min(colWidth - 36, maxH - 80, 560));
 }
 
 function findKingSquare(chess: Chess, color: 'w' | 'b'): string | null {

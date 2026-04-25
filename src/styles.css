@@ -2281,3 +2281,183 @@ kbd {
   min-width: 80px;
   text-align: right;
 }
+
+/* ============================================================
+   Responsive scaling overhaul
+   ============================================================ */
+
+/* Tablet breakpoint */
+@media (max-width: 1020px) {
+  .lesson-grid-2col {
+    grid-template-columns: 1fr;
+  }
+  .lesson-page .board-col,
+  .puzzle-page .board-col,
+  .master-game-page .board-col,
+  .play-page .board-col,
+  .explore-page .board-col,
+  .drills-page .board-col {
+    position: relative;
+    top: 0;
+    max-height: none;
+  }
+  .info-col {
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .topbar .search-btn {
+    max-width: 320px;
+    margin-left: 0;
+  }
+}
+
+/* Phone — tighter everything */
+@media (max-width: 760px) {
+  .main { padding: 0.5rem 0.4rem 0.35rem; }
+  .editorial-hero { margin: 1rem auto 1.25rem; padding: 0 0.4rem; }
+  .editorial-hero .kicker { margin-bottom: 0.7rem; }
+  .editorial-hero h1 { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+  .editorial-hero .hero-lede { font-size: 0.95rem; margin-bottom: 1rem; }
+  .editorial-hero .hero-cta { gap: 0.7rem; }
+  .btn-primary-dark { font-size: 0.88rem; padding: 0.55rem 0.95rem; }
+  .hero-meta { font-size: 0.78rem; }
+  .section-title-row { margin: 1.4rem 0 0.5rem; padding: 0 0.4rem; }
+  .section-title-row h2 { font-size: 1.3rem; }
+  .section-title-row .section-hint { display: none; }
+
+  .books-grid, .practice-grid, .puzzle-grid, .play-grid, .daily-row {
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+    padding: 0 0.3rem;
+  }
+  .book-card { padding: 1.1rem 1.15rem; gap: 0.55rem; }
+  .book-card h3 { font-size: 1.4rem; }
+  .book-card .book-lede { font-size: 0.88rem; }
+  .book-stats .stat-num { font-size: 1.25rem; }
+  .book-stats .stat-label { font-size: 0.6rem; }
+
+  .practice-card { padding: 0.85rem 1rem; }
+  .practice-card h3 { font-size: 1.05rem; }
+  .practice-card p { font-size: 0.85rem; }
+  .practice-icon { width: 32px; height: 32px; font-size: 1.1rem; }
+
+  .daily-card { padding: 1rem 1.2rem; gap: 0.45rem; }
+  .daily-card h3 { font-size: 1.2rem; }
+
+  .achievements-card { padding: 1rem 1.2rem; }
+  .badge { padding: 0.32rem 0.55rem; font-size: 0.78rem; }
+
+  .xp-row { padding: 0.45rem 0.7rem; max-width: none; margin: 0 0.3rem 0.7rem; gap: 0.6rem; }
+  .xp-level { font-size: 1.1rem; }
+  .xp-label { font-size: 0.75rem; min-width: 60px; }
+
+  .breadcrumbs { font-size: 0.78rem; padding: 0 0.15rem 0.5rem; }
+
+  .lesson-grid-2col { gap: 0.5rem; margin-top: 0.5rem; }
+  .annotation-panel { padding: 0.75rem 0.85rem; }
+  .annotation-panel h2 { font-size: 1.1rem; }
+
+  .board-controls {
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    padding: 0;
+  }
+  .board-controls button {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0.35rem 0.5rem;
+    font-size: 1rem;
+    flex: 1 1 40px;
+  }
+  .board-controls button:nth-last-child(-n+2) {
+    flex: 1 1 auto;
+    min-width: 110px;
+    font-size: 0.8rem;
+  }
+
+  .info-col { gap: 0.55rem; padding: 0; }
+  .lesson-page .page-hero h1,
+  .opening-page .page-hero h1,
+  .puzzle-page .page-hero h1 {
+    font-size: clamp(1.3rem, 5vw, 1.7rem);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .complete-modal { padding: 1.4rem 1.2rem; }
+  .complete-title { font-size: 1.5rem; }
+  .complete-lede { font-size: 0.92rem; }
+
+  .toast-host { top: 56px; right: 8px; left: 8px; }
+  .toast-card { padding: 0.55rem 0.8rem; min-width: 0; max-width: none; gap: 0.6rem; }
+  .toast-icon { font-size: 1.3rem; }
+  .toast-title { font-size: 0.95rem; }
+  .toast-desc { font-size: 0.74rem; }
+
+  .cmd-overlay { padding-top: 8vh; }
+  .cmd-panel { width: 100%; max-width: 100%; border-radius: 8px; }
+  .cmd-input-row { padding: 0.7rem 0.8rem; }
+  .cmd-input-row input { font-size: 0.92rem; }
+  .cmd-list { max-height: 60vh; }
+  .cmd-item { padding: 0.5rem 0.8rem; font-size: 0.88rem; }
+  .cmd-item-desc { display: none; }
+
+  .puzzle-progress-bar { padding: 0.55rem 0.7rem; }
+  .progress-row { font-size: 0.85rem; gap: 0.5rem; }
+  .progress-row .btn { padding: 0.35rem 0.6rem; font-size: 0.8rem; }
+
+  .drills-toolbar { gap: 0.4rem; padding: 0.5rem 0.65rem; }
+  .drill-stats { font-size: 0.78rem; gap: 0.5rem; }
+
+  .play-toolbar select, .play-toolbar label, .play-toolbar .btn { font-size: 0.85rem; }
+
+  .board-with-eval { display: flex; flex-direction: row; gap: 6px; align-items: stretch; }
+  .eval-bar { width: 14px !important; }
+
+  .multipv-panel { padding: 0.5rem 0.7rem; }
+  .pv-eval { font-size: 0.78rem; }
+  .pv-moves { font-size: 0.74rem; }
+
+  .footer { display: none; }
+}
+
+/* Very narrow phones */
+@media (max-width: 380px) {
+  .main { padding: 0.4rem 0.25rem 0.3rem; }
+  .topbar { padding: 0.45rem 0.55rem; }
+  .topbar .brand-block { font-size: 0.95rem; }
+  .topbar .brand-mark-circle { width: 22px; height: 22px; font-size: 0.7rem; }
+  .topbar .search-btn { padding: 0.35rem 0.55rem; font-size: 0.74rem; }
+  .topbar .search-btn span { display: none; }
+  .topbar .search-btn kbd { margin-left: 0; }
+  .streak-pill { display: none; }
+  .avatar-chip { width: 30px; height: 30px; font-size: 0.7rem; }
+}
+
+/* Topbar search compresses gracefully */
+@media (max-width: 760px) {
+  .topbar .search-btn span { font-size: 0.78rem; }
+}
+
+/* Bottom tabs sit safely above content */
+.app { padding-bottom: 0; }
+@media (max-width: 760px) {
+  .app { padding-bottom: calc(56px + env(safe-area-inset-bottom, 0)); }
+  .bottom-tabs .tab { min-height: 50px; padding: 0.35rem 0.15rem; }
+  .bottom-tabs .tab-icon { font-size: 1rem; }
+  .bottom-tabs .tab-label { font-size: 0.65rem; }
+}
+
+/* MoveList: don't take more than 30vh on mobile */
+@media (max-width: 760px) {
+  .movelist { max-height: 25vh; }
+}
+
+/* Topbar grid layout cleanup */
+.topbar { flex-wrap: nowrap; }
+@media (max-width: 540px) {
+  .topbar { gap: 0.35rem; }
+  .topbar .brand-divider, .topbar .brand-sub { display: none; }
+}
