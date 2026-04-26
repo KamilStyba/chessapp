@@ -24,5 +24,6 @@ export const queensGambitOverview: OpeningOverview = {
     { id: 'semi-slav', title: 'Semi-Slav', blurb: '...e6 and ...c6 — solid triangle; Meran, Anti-Meran, Moscow, Anti-Moscow, Botvinnik.' },
     { id: 'tarrasch', title: 'Tarrasch Defence', blurb: '3...c5 — Black accepts an IQP for fast development and open lines.' },
     { id: 'chigorin-albin', title: 'Chigorin & Albin', blurb: 'Sharp, enterprising sidelines: 2...Nc6 and 2...e5 (Albin Counter-Gambit).' },
+    { id: 'marshall', title: 'Marshall Defence (2...Nf6)', blurb: 'A tactical curiosity — leads to the famous "exchange of forks" Nxc7+ / Nxa8 sequence.' },
   ],
 };

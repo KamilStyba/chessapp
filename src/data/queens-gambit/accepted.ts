@@ -131,5 +131,10 @@ export const qgAccepted: Lesson = {
       line: ['d4', 'd5', 'c4', 'dxc4', 'e4', 'b5', 'a4', 'c6', 'axb5', 'cxb5', 'Qf3'],
       comment: 'Black tries to hold the extra pawn and loses it with interest. After 8.Qf3 the threats on a8 and b5 are decisive — Black cannot simultaneously defend the rook and the b-pawn.',
     },
+    {
+      name: 'Hold-the-pawn after 3.e3 b5? — Qa4+ recovery',
+      line: ['d4', 'd5', 'c4', 'dxc4', 'e3', 'b5', 'a4', 'bxa4', 'Qxa4+', 'Bd7', 'Qxc4'],
+      comment: '3.e3 is the quietest QGA recapture preparation. If Black greedily clings to the c4-pawn with 3...b5?, White breaks it open with 4.a4! Now 4...bxa4 5.Qxa4+ Bd7 6.Qxc4 wins back the pawn with check and a clearly better position. Other tries fail similarly: 4...a6 5.axb5 (the a6-pawn is pinned to a8); 4...c6 5.axb5 cxb5 6.Qf3 hits both the rook and the b-pawn at once. The lesson: in the QGA you cannot keep the gambit pawn — try to extract concessions, then give it back with timing.',
+    },
   ],
 };

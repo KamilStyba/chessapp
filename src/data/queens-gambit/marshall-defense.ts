@@ -1,0 +1,106 @@
+import { Lesson } from '../types';
+
+export const qgMarshallDefense: Lesson = {
+  id: 'marshall',
+  parent: 'queens-gambit',
+  title: 'QGD — Marshall Defence (2...Nf6)',
+  intro:
+    "The Marshall Defence (1.d4 d5 2.c4 Nf6) is a sharp, slightly disreputable answer to the Queen's Gambit. By developing the knight before defending d5, Black accepts an immediate exchange (3.cxd5 Nxd5) where the central knight will be challenged by 4.e4 and forced to retreat. The line is full of forcing tactical ideas — most famously the 'exchange of forks' sequence after 5...e5, where Black's queen swap and ...Ng4 fork attempt are met by White's symmetrical knight raid: 8.Nd5 Nxf2+ 9.Ke2 Nxh1 10.Nxc7+ Kd8 11.Nxa8. Both sides come out with a rook and a pawn lifted off the board, but White's pieces are coordinated and Black's king has lost the right to castle. Marshall himself never trusted it as a primary defence; modern theory considers it inferior to the QGD Orthodox or the Slav, but it is an excellent surprise weapon and a brilliant pattern lesson in piece play, file targeting, and the importance of king safety.",
+  themes: [
+    'Surrender of the centre — Black retreats the knight twice',
+    'Queen exchange + king on d1 — White accepts a slightly awkward king',
+    'Knight tactics: ...Ng4 fork attempts vs. Nd5 / Nxc7+ counter-fork',
+    'Material exchanges that look symmetrical but favour the better-coordinated side',
+    'The cost of moving the f6-knight twice in the opening',
+  ],
+  pawnStructures: [
+    {
+      name: 'White centre pawn duo (e4/d-gone)',
+      description: "After 4.e4 Nf6 5.Nc3, White has a pure e4 pawn with d-pawn long gone (or about to be); the Nc3-Nd5 jump is strong because there is no Black ...c6 to challenge the outpost. Black's structural problem is the open d-file with the queens off and the king stuck on d8.",
+    },
+  ],
+  typicalPlans: {
+    white: [
+      'Build a strong central pawn duo and discourage ...c6.',
+      'Use the Nc3-Nd5 jump to invade c7 / a8 if Black opens the c-file.',
+      'Bring the king to e2, connect rooks via the kingside, and use the active knight + bishop pair.',
+      'In quiet lines: complete development with Bd3, Nf3, O-O and exploit the better structure.',
+    ],
+    black: [
+      'Keep the f6/d5 knights coordinated; avoid the ...e5 tactical lunge unless prepared for the exchange.',
+      'Aim for ...c6 followed by ...Nd5 stable blockade if White plays the slower 5.Nf3.',
+      'Use the bishop pair and try to round up the e4-pawn in long endgames.',
+      'Avoid the 5...e5 tactic against a prepared opponent — White\'s exchange is fully booked.',
+    ],
+  },
+  mainLine: {
+    id: 'main',
+    name: 'Marshall — Tactical Main Line',
+    eco: 'D06',
+    summary: '1.d4 d5 2.c4 Nf6 3.cxd5 Nxd5 4.e4 Nf6 5.Nc3 e5 — the famous "exchange of forks" sequence.',
+    line: [
+      { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' },
+      { san: 'Nf6', comment: 'The Marshall Defence — Black develops a knight before defending d5. The downside is that the knight will be moved twice, costing tempo.', keyIdea: 'Develop a piece before defending d5.' },
+      { san: 'cxd5', comment: 'White accepts the offer; 3.Nf3 transposes to a Reti/QGD setup.' },
+      { san: 'Nxd5', comment: 'Forced — the only way to recover the pawn without losing more time.' },
+      { san: 'e4', comment: 'White claims the centre at once and asks the knight where to go.' , keyIdea: 'A strong central pawn duo, no challenge from ...c6.' },
+      { san: 'Nf6', comment: 'The natural retreat — Nb6 is also playable but passive. The knight has now moved three times in five moves.' },
+      { san: 'Nc3', comment: 'Quiet development; the alternative 5.Nf3 leads to a slower, structurally healthier game for White.' },
+      { san: 'e5', comment: '5...e5 is the speculative gambit — Black offers a queen exchange to disturb White\'s castling rights, hoping the active ...Ng4 will compensate. Modern analysis shows White is fine with precise play.', keyIdea: 'Pawn sac for activity + king disruption.', alternatives: [ { san: 'g6', why: 'Solid alternative — fianchetto and accept the inferior pawn structure.' }, { san: 'Bg4', why: 'Pin idea against Nf3 setups.' } ] },
+      { san: 'dxe5', comment: 'Accepting; declining with 6.d5 c6 7.Nf3 Bb4 gives Black no real difficulty.' },
+      { san: 'Qxd1+', comment: 'Forcing the king to commit. The point of the gambit.' },
+      { san: 'Kxd1', comment: 'King moves; castling is gone but the king on d1 is reasonably safe.' },
+      { san: 'Ng4', comment: 'Threatening the f2 fork — ...Nxf2+ would win the rook.', keyIdea: 'The fork attempt — but it cuts both ways.' },
+      { san: 'Nd5', comment: '8.Nd5! — White\'s symmetrical raid. The knight threatens Nxc7+ winning the rook on a8 in turn.', keyIdea: 'Counter-fork — both sides race for material.' },
+      { san: 'Nxf2+', comment: 'Forking king and rook on h1.' },
+      { san: 'Ke2', comment: 'The only good square; Kc2 walks into ...Bf5+.' },
+      { san: 'Nxh1', comment: 'Black grabs the rook.' },
+      { san: 'Nxc7+', comment: 'Now White does the same — fork on king and rook on a8.', keyIdea: 'White\'s knight collects material in turn.' },
+      { san: 'Kd8', comment: 'Forced — moving anywhere else would lose the queen or worse, and the king must stay on a dark square to keep options.' },
+      { san: 'Nxa8', comment: 'White harvests the rook. The dust settles: each side has won a pawn and a rook from the opponent. Material is equal but White has an extra central pawn from the early dxe5 capture, plus a knight roaming behind enemy lines on a8 (which can be rescued via b6 or Nb6 ideas).', keyIdea: 'Material equal, but White has structure and king safety.' },
+    ],
+  },
+  variations: [
+    {
+      id: 'quiet-nf3',
+      name: 'Quiet Marshall — 5.Nf3',
+      eco: 'D06',
+      summary: 'White declines the tactics and plays for a structural edge.',
+      line: [
+        { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' }, { san: 'Nf6', comment: '' },
+        { san: 'cxd5', comment: '' }, { san: 'Nxd5', comment: '' }, { san: 'e4', comment: '' }, { san: 'Nf6', comment: '' },
+        { san: 'Nf3', comment: 'Quiet — White prepares Nc3 and Bd3 with normal development. This is considered slightly better than 5.Nc3 in modern theory because it keeps the option of c2-c3 protected.' },
+        { san: 'Bg4', comment: 'Active development — pinning the f3-knight.' },
+        { san: 'Be2', comment: 'Breaks the pin and prepares O-O.' },
+        { san: 'e6', comment: 'Solid — preparing ...Be7 and ...O-O.' },
+        { san: 'O-O', comment: '' },
+        { san: 'Be7', comment: '' },
+        { san: 'Nc3', comment: '' },
+        { san: 'O-O', comment: 'Both sides castle. White has a small but persistent advantage thanks to the central pawn and Black\'s tempo loss with the f6-knight.' },
+      ],
+    },
+    {
+      id: 'declining-d5',
+      name: 'White Declines — 6.d5',
+      eco: 'D06',
+      summary: 'White avoids the queen exchange and locks the centre.',
+      line: [
+        { san: 'd4', comment: '' }, { san: 'd5', comment: '' }, { san: 'c4', comment: '' }, { san: 'Nf6', comment: '' },
+        { san: 'cxd5', comment: '' }, { san: 'Nxd5', comment: '' }, { san: 'e4', comment: '' }, { san: 'Nf6', comment: '' },
+        { san: 'Nc3', comment: '' }, { san: 'e5', comment: '' },
+        { san: 'd5', comment: '6.d5 — declining the queen exchange and locking the centre. Black equalises with ...c6.', keyIdea: 'Decline; play for a closed centre instead.' },
+        { san: 'c6', comment: 'Challenging the d5-pawn.' },
+        { san: 'Nf3', comment: '' },
+        { san: 'Bb4', comment: 'Pinning the c3-knight.' },
+        { san: 'Bd3', comment: 'White develops naturally and prepares O-O. The position is approximately equal — the closed centre suits Black\'s slightly cramped piece position.' },
+      ],
+    },
+  ],
+  commonTraps: [
+    {
+      name: 'The Nxc7+ trap (Marshall main line)',
+      line: ['d4', 'd5', 'c4', 'Nf6', 'cxd5', 'Nxd5', 'e4', 'Nf6', 'Nc3', 'e5', 'dxe5', 'Qxd1+', 'Kxd1', 'Ng4', 'Nd5'],
+      comment: "The main line is itself a 'trap' if you don't know it. After 7...Ng4 threatening ...Nxf2+, the natural-looking 8.h3? loses to ...Nxe5 with a clean extra pawn. The correct move is 8.Nd5! threatening Nxc7+ — and now the symmetrical fork sequence runs to material equality with structural advantage to White.",
+    },
+  ],
+};
