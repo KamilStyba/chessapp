@@ -12,6 +12,7 @@ import { qgSlav } from './queens-gambit/slav';
 import { qgSemiSlav } from './queens-gambit/semi-slav';
 import { qgTarrasch } from './queens-gambit/tarrasch';
 import { qgChigorinAlbin } from './queens-gambit/chigorin-albin';
+import { qgMarshallDefense } from './queens-gambit/marshall-defense';
 import { qgGames } from './queens-gambit/games';
 
 import { sicilianOverview } from './sicilian/overview';
@@ -46,6 +47,7 @@ const qgLessons: Lesson[] = [
   qgSemiSlav,
   qgTarrasch,
   qgChigorinAlbin,
+  qgMarshallDefense,
 ];
 
 const sicLessons: Lesson[] = [
